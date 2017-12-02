@@ -211,11 +211,25 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
         }
 
         if (tornadoes_dict.death[state].hasOwnProperty(year)) {
-            tornadoes_dict.death[state][year].push(death / state_population[state][year] * DEATH_TOLL_PROPORTION);
+            tornadoes_dict.death[state][year] = tornadoes_dict.death[state][year] + death;
         } else {
-            tornadoes_dict.death[state][year] = [ death / state_population[state][year] * DEATH_TOLL_PROPORTION ];
+            tornadoes_dict.death[state][year] = death;
         }
     }
+    for (let i = 0; i < STATE_LIST.length; i++) {
+        let state = STATE_LIST[i];
+        if (tornadoes_dict.death[state] !== undefined) {
+            console.log('tornadoes_dict.death[state] !== undefined');
+            let years = Object.keys(tornadoes_dict.death[state]);
+            for (let j = 0; j < years.length; j++) {
+                // console.log('tornadoes_dict.death[state][years[j]]:',tornadoes_dict.death[state][years[j]]);
+                tornadoes_dict.death[state][years[j]] = tornadoes_dict.death[state][years[j]] / state_population[state][years[j]] * DEATH_TOLL_PROPORTION;
+                if (tornadoes_dict.death[state][years[j]] == 0 || isNaN(tornadoes_dict.death[state][years[j]])) {
+                    delete tornadoes_dict.death[state][years[j]];
+                }
+            }
+        }
+    };
     return tornadoes_dict;
 };
 
