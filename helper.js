@@ -339,7 +339,35 @@ $(document).ready(function() {
     # @ return List<Disaster> [(longitude, latitude) …]
 
 */
-let getDisasterLocationList = function(disasterType, startYear, endYear) {
+let getDisasterLocationList = function(disasterType, startYear, endYear, targetState = "all") {
+    if (DISASTER_TYPES.indexOf(disasterType) === -1) {
+        console.log("[Error] No such disaster type!");
+        return;
+    }
+    let disaLocationList = [];
+    let locationDict = data[disasterType].location;
+    let states = Object.keys(data[disasterType].location);
+    if (targetState === "all") {
+        for (let i = 0; i < STATE_LIST.length; i++) {
+            let state = STATE_LIST[i];
+            for (let j = startYear; j <= endYear; j++) {
+                let year = startYear.toString();
+                if (locationDict[state][year] !== undefined) {
+                    disaLocationList = disaLocationList.concat(locationDict[state][year]);
+                }
+            }
+        }
+    } else {
+        for (let j = startYear; j <= endYear; j++) {
+            let year = startYear.toString();
+            if (locationDict[targetState][year] !== undefined) {
+                disaLocationList = disaLocationList.concat(locationDict[targetState][year]);
+            }
+        }
+    }
+    return disaLocationList;
+};
+/*
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
         console.log("[Error] No such disaster type!");
         return;
