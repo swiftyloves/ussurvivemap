@@ -1,7 +1,7 @@
 
 function refreshCheckBoxResult() {
-    
-    updateStateDeathRateOnMap() 
+    updateStateDeathRateOnMap();
+    updateStateDeathRateOnLineChart();
 }
 
 function state_to_state_polygon(state_name) {
@@ -38,4 +38,24 @@ function updateStateDeathRateOnMap() {
     }
 
     var NM = d3.select("#" + state_to_state_polygon("New Mexico"));
+}
+
+function updateStateDeathRateOnLineChart() {
+    let state = 'MI';
+    let startYear = $('#amount-min').val();
+    let endYear = $('#amount-max').val();
+
+    for (disaster of disaster_names) {
+        drawLineChart(state, disaster, startYear, endYear);
+    }
+}
+
+function drawLineChart(state, disaster, startYear, endYear) {
+    var margin = {top: 20, right: 20, bottom: 20, left: 20};
+    var width = 400;
+    var height = 100;
+
+    // Set ranges
+    var x = d3.scaleLinear().range([0, width]);
+    var y = d3.scaleLinear().range([height, 0]);
 }
