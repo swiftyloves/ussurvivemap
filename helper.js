@@ -224,17 +224,99 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
     return tornadoes_dict;
 };
 
-var data = {}
+let processGunshotData = function(gunshot_raw_data, state_population) {
+    let dataLines = gunshot_raw_data.split(/\r\n|\n/);
+    let gunshot_dict = {'location': {}, 'death': {}};
+    for (let i = 0; i < STATE_LIST.length; i++) {
+        gunshot_dict.location[STATE_LIST[i]] = {};
+        gunshot_dict.death[STATE_LIST[i]] = 0.0;
+    }
+    console.log('gunshot_dict:',gunshot_dict)
+    for (let i = 0; i < dataLines.length - 1; i++) {
+        let nums = dataLines[i].split("\t");
+        if (nums.length < 5) {
+            console.log('nums:',nums)
+            console.log('[Error] Amount of desired column is not right.')
+            console.log('Error dataLines ',i, ": ",dataLines[i])
+            continue;
+        }
+        // Work around to complete year to four digit
+        let year_surfix = (nums[0].split("/"))[2];
+        if (year_surfix == undefined) {
+            console.log(nums)
+        }
+        let year = year_surfix;
+        if (year_surfix.length == 2) {
+            year_surfix = parseInt(year_surfix);
+            if (year_surfix < 20) {
+                year = '20' + year_surfix;
+            } else {
+                year = '19' + year_surfix;
+            }
+        }
+
+        // Work around to parse state
+        let location = nums[1].replace(/\"/g, "").split(",");
+        if (location[1] == undefined) {
+            continue;
+        }
+        let state = location[1].trim();
+        // console.log('location:',location);
+        if (STATE_LIST.indexOf(state) === -1) {
+            state = abbrState(state,'abbr')
+        }
+        if (state == 'error') { // parse error
+            continue;
+        }
+
+        if (STATE_LIST.indexOf(state) === -1) {
+            continue;
+        }
+        let locationArr = [parseFloat(nums[2].trim()), parseFloat(nums[3].trim())];
+        let death = parseInt(nums[4]);
+
+        if (gunshot_dict.location[state].hasOwnProperty(year)) {
+            gunshot_dict.location[state][year].push(locationArr);
+        } else {
+            gunshot_dict.location[state][year] = [ locationArr ];
+        }
+
+        if (gunshot_dict.death[state].hasOwnProperty(year)) {
+            gunshot_dict.death[state][year] = gunshot_dict.death[state][year] + death;
+        } else {
+            gunshot_dict.death[state][year] = death;
+        }
+    }
+
+    for (let i = 0; i < STATE_LIST.length; i++) {
+        let state = STATE_LIST[i];
+        if (gunshot_dict.death[state] !== undefined) {
+            let years = Object.keys(gunshot_dict.death[state]);
+            for (let j = 0; j < years.length; j++) {
+                gunshot_dict.death[state][years[j]] = gunshot_dict.death[state][years[j]] / state_population[state][years[j]] * DEATH_TOLL_PROPORTION;
+                if (gunshot_dict.death[state][years[j]] == 0 || isNaN(gunshot_dict.death[state][years[j]])) {
+                    delete gunshot_dict.death[state][years[j]];
+                }
+            }
+        }
+    };
+    return gunshot_dict;
+};
+
+var data = {};
 $(document).ready(function() {
     getStatePopulation.then(function(state_population){
-        return Promise.all([getTornadoes, getHurricane]).then(values => { 
+        return Promise.all([getTornadoes, getHurricane, getGunshot]).then(values => {
             let tornadoes_raw_data = values[0];
             let hurricane_raw_data = values[1];
+            let gunshot_raw_data = values[2];
             tornadoes_data = processTornadoesData(tornadoes_raw_data, state_population);
             hurricane_data = processHurricaneData(hurricane_raw_data, state_population);
+            gunshot_data = processGunshotData(gunshot_raw_data, state_population);
 
             data['hurricane'] = hurricane_data;
             data['tornadoes'] = tornadoes_data;
+            data['gunshot'] = gunshot_data;
             return data;
         });
     }).then(function(data){
