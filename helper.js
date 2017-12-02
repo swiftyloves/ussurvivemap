@@ -210,7 +210,6 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
     for (let i = 0; i < STATE_LIST.length; i++) {
         let state = STATE_LIST[i];
         if (tornadoes_dict.death[state] !== undefined) {
-            console.log('tornadoes_dict.death[state] !== undefined');
             let years = Object.keys(tornadoes_dict.death[state]);
             for (let j = 0; j < years.length; j++) {
                 // console.log('tornadoes_dict.death[state][years[j]]:',tornadoes_dict.death[state][years[j]]);
@@ -321,8 +320,12 @@ $(document).ready(function() {
         });
     }).then(function(data){
         // [TODO] Bind EventListener Here
-        console.log('data:',data)
-        console.log(getDisasterLocationList('hurricane', 1960, 1961));
+        /* Usage Example 
+        console.log(getDisasterLocationList('tornadoes', '1960', '1961'));
+        console.log(getDisasterLocationList('tornadoes', '1960', '1961', "MI"));
+        console.log(getDeathRateList('tornadoes', '1960', '1961'));
+        console.log(getDeathRateList('tornadoes', '1964', '1974', 'AZ'));
+        */
     });
 });
 
@@ -339,7 +342,7 @@ $(document).ready(function() {
     # @ return List<Disaster> [(longitude, latitude) …]
 
 */
-let getDisasterLocationList = function(disasterType, startYear, endYear, targetState = "all") {
+let getDisasterLocationList = function(disasterType, startYearStr, endYearStr, targetState = "all") {
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
         console.log("[Error] No such disaster type!");
         return;
@@ -347,6 +350,8 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
     let disaLocationList = [];
     let locationDict = data[disasterType].location;
     let states = Object.keys(data[disasterType].location);
+    let startYear = parseInt(startYearStr);
+    let endYear = parseInt(endYearStr);
     if (targetState === "all") {
         for (let i = 0; i < STATE_LIST.length; i++) {
             let state = STATE_LIST[i];
@@ -368,18 +373,41 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
     return disaLocationList;
 };
 /*
+'getDeathRateList': function(disasterType, startYear, endYear):
+    # @ param disasterType : string
+    # @ param startYear : string
+    # @ param endYear : string
+    # @ return List<Float> [0.003, 0.005 …]
+*/
+
+let getDeathRateList = function(disasterType, startYearStr, endYearStr, targetState = "all") {
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
         console.log("[Error] No such disaster type!");
         return;
     }
-    let years = Object.keys(data[disasterType].location);
-    let result = [];
-    for (let i = 0; i < years[i]; i++) {
-        let year = parseInt(years[i])
-        if (startYear <= year && year <= endYear) {
-            result.push(data[disasterType].location[year]);
+    let deathRateList = []
+    let deathDict = data[disasterType].death;
+    console.log('deathDict:',deathDict);
+    let states = Object.keys(data[disasterType].death);
+    let startYear = parseInt(startYearStr);
+    let endYear = parseInt(endYearStr);
+    if (targetState === "all") {
+        for (let i = 0; i < STATE_LIST.length; i++) {
+            let state = STATE_LIST[i];
+            for (let y = startYear; y <= endYear; y++) {
+                let year = y.toString();
+                if (deathDict[state][year] !== undefined) {
+                    deathRateList.push(deathDict[state][year]);
+                }
+            }
+        }
+    } else {
+        for (let y = startYear; y <= endYear; y++) {
+            let year = y.toString();
+            if (deathDict[targetState][year] !== undefined) {
+                deathRateList.push(deathDict[targetState][year]);
+            }
         }
     }
-    return result;
+    return deathRateList;
 };
-
