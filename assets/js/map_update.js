@@ -32,9 +32,12 @@ function updateStateDeathRateOnMap() {
     for (s in state_name_pairs) {
         var state_name = state_name_pairs[s][0];
         var death_rate = state_death_rates[state_name];
-        var state_poly = d3.select("#" + state_to_state_polygon(state_name));
+        var state_abbr = abbrState(state_name, "abbr");
+        var state_poly = d3.select("#" + state_to_state_polygon(state_abbr));
         state_poly.style("fill",deathToColor(death_rate));
     }
+
+    var NM = d3.select("#" + state_to_state_polygon("New Mexico"));
 }
 
 function updateStateDeathRateOnLineChart() {

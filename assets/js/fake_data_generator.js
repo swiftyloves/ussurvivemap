@@ -12,6 +12,7 @@ function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+
 function getFakeDeathRateListOfState(state, disasterType, startYear, endYear) {
     ret = []
     for (let i = startYear; i <= endYear; ++i) {
@@ -19,3 +20,4 @@ function getFakeDeathRateListOfState(state, disasterType, startYear, endYear) {
     }
     return ret;
 }
+

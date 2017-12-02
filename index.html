@@ -101,7 +101,7 @@
                 .attr("d", path)
                 .style("stroke", "#fff")
                 .style("stroke-width", "1")
-                .attr("id", function(d, i) { return state_to_state_polygon(d.properties.stateName)})
+                .attr("id", function(d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr"))})
                 .style("fill", function (d) {
 
                     // Get data value
