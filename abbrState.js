@@ -60,13 +60,15 @@ let abbrState = function(input, to){
             if(states[i][0] == input){
                 return(states[i][1]);
             }
-        }    
+        }
+        return 'error';
     } else if (to == 'name'){
         input = input.toUpperCase();
         for(i = 0; i < states.length; i++){
             if(states[i][1] == input){
                 return(states[i][0]);
             }
-        }    
+        }
+        return 'error';
     }
 }
