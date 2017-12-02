@@ -57,20 +57,20 @@ var state_name_pairs = [
 ];
 
 function abbrState(input, to){
-    
-    
+    console.log(input)
+    if (typeof input == 'undefined') return "";
     if (to == 'abbr'){
         input = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-        for(i = 0; i < state_names_pairs.length; i++){
-            if(state_names_pairs[i][0] == input){
-                return(state_names_pairs[i][1]);
+        for(i = 0; i < state_name_pairs.length; i++){
+            if(state_name_pairs[i][0] == input){
+                return(state_name_pairs[i][1]);
             }
         }    
     } else if (to == 'name'){
         input = input.toUpperCase();
-        for(i = 0; i < state_names_pairs.length; i++){
-            if(state_names_pairs[i][1] == input){
-                return(state_names_pairs[i][0]);
+        for(i = 0; i < state_name_pairs.length; i++){
+            if(state_name_pairs[i][1] == input){
+                return(state_name_pairs[i][0]);
             }
         }    
     }

@@ -11,3 +11,4 @@ function getFakeDeathRateList(disasterType, startYear, endYear) {
 function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
+
