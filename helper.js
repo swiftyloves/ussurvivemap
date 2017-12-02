@@ -49,10 +49,10 @@ Populaiton Structure:
 let EXTRACT_COLUMN_AMOUNT = 3;
 
 let STATE_LIST =  ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC"];
-
-let STATE_POPULATION_CSV_FILM_NAME = 'state_population_data_clean.csv';
-let TORNADOES_CSV_FILM_NAME = 'tornadoes_clean_manual.csv';
-let HURRICAN_CSV_FILM_NAME = 'hurricane_clean_year_manual.csv';
+let STATE_POPULATION_CSV_FILE_NAME = 'state_population_data_clean.csv';
+let TORNADOES_CSV_FILE_NAME = 'tornadoes_clean_manual.csv';
+let HURRICAN_CSV_FILE_NAME = 'hurricane_clean_year_manual.csv';
+let GUNSHOT_CSV_FILE_NAME = 'gunshot_clean_manual.csv';
 
 let EARLIER_YEAR = 1950;
 let LAST_YEAR = 2015;
@@ -65,7 +65,7 @@ let DEATH_TOLL_PROPORTION = 1000;
 let getStatePopulation = new Promise((resolve, reject) => {
     $.ajax({
         type: 'GET',
-        url: 'data/' + STATE_POPULATION_CSV_FILM_NAME,
+        url: 'data/' + STATE_POPULATION_CSV_FILE_NAME,
         dataType: 'text',
         success: function(data){
             resolve(processSateData(data));
@@ -76,7 +76,7 @@ let getStatePopulation = new Promise((resolve, reject) => {
 let getGunshot = new Promise((resolve, reject) => {
     $.ajax({
         type: 'GET',
-        url: 'data/gunshot.csv',
+        url: 'data/' + GUNSHOT_CSV_FILE_NAME,
         dataType: 'text',
         success: function(data){ resolve(data); }
     })
@@ -85,7 +85,7 @@ let getGunshot = new Promise((resolve, reject) => {
 let getHurricane = new Promise((resolve, reject) => {
     $.ajax({
         type: 'GET',
-        url: 'data/' + HURRICAN_CSV_FILM_NAME,
+        url: 'data/' + HURRICAN_CSV_FILE_NAME,
         dataType: 'text',
         success: function(data){
             resolve(data);
@@ -93,18 +93,10 @@ let getHurricane = new Promise((resolve, reject) => {
     })
 });
 
-let getHurricaneFun = function(state_population){
-    let data = getHurricane.then(function(hurricane_raw_data){
-        return processHurricaneData(hurricane_raw_data, state_population)
-    });
-    console.log('processHurricaneData:', data);
-    return data;
-};
-
 let getTornadoes = new Promise((resolve, reject) => {
     $.ajax({
         type: 'GET',
-        url: 'data/' + TORNADOES_CSV_FILM_NAME,
+        url: 'data/' + TORNADOES_CSV_FILE_NAME,
         dataType: 'text',
         success: function(data){
             resolve(data);
@@ -187,7 +179,6 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
         tornadoes_dict.location[STATE_LIST[i]] = {};
         tornadoes_dict.death[STATE_LIST[i]] = {};
     }
-    console.log('tornadoes_dict:',tornadoes_dict)
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
         if (nums.length < 5) {
