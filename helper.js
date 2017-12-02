@@ -56,7 +56,7 @@ let GUNSHOT_CSV_FILE_NAME = 'gunshot_clean_manual.csv';
 
 let EARLIER_YEAR = 1950;
 let LAST_YEAR = 2015;
-let DISASTER_TYPES = ["hurricane", "earthquake", "gunshot", "tornadoes"];
+let DISASTER_TYPES = ["hurricane", "earthquake", "gunshot", "tornado", "storm"];
 
 let DEATH_TOLL_PROPORTION = 1000;
 
@@ -321,10 +321,10 @@ $(document).ready(function() {
     }).then(function(data){
         // [TODO] Bind EventListener Here
         /* Usage Example 
-        console.log(getDisasterLocationList('tornadoes', '1960', '1961'));
-        console.log(getDisasterLocationList('tornadoes', '1960', '1961', "MI"));
-        console.log(getDeathRateList('tornadoes', '1960', '1961'));
-        console.log(getDeathRateList('tornadoes', '1964', '1974', 'AZ'));
+        console.log(getDisasterLocationList('tornado', '1960', '1961'));
+        console.log(getDisasterLocationList('tornado', '1960', '1961', "MI"));
+        console.log(getDeathRateList('tornado', '1960', '1961'));
+        console.log(getDeathRateList('tornado', '1964', '1974', 'AZ'));
         */
     });
 });
@@ -336,13 +336,13 @@ $(document).ready(function() {
 'getDisasterLocationList': function(disasterType, startYear, endYear):
     # for scatter plotting
     # @ param disasterType : string
-    # @ param startYear : string
-    # @ param endYear : string
+    # @ param startYear : int
+    # @ param endYear : int
 
-    # @ return List<Disaster> [(longitude, latitude) …]
+    # @ return List<Disaster> [[longitude, latitude], ...]
 
 */
-let getDisasterLocationList = function(disasterType, startYearStr, endYearStr, targetState = "all") {
+let getDisasterLocationList = function(disasterType, startYear, endYear, targetState = "all") {
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
         console.log("[Error] No such disaster type!");
         return;
@@ -350,8 +350,6 @@ let getDisasterLocationList = function(disasterType, startYearStr, endYearStr, t
     let disaLocationList = [];
     let locationDict = data[disasterType].location;
     let states = Object.keys(data[disasterType].location);
-    let startYear = parseInt(startYearStr);
-    let endYear = parseInt(endYearStr);
     if (targetState === "all") {
         for (let i = 0; i < STATE_LIST.length; i++) {
             let state = STATE_LIST[i];
@@ -375,12 +373,12 @@ let getDisasterLocationList = function(disasterType, startYearStr, endYearStr, t
 /*
 'getDeathRateList': function(disasterType, startYear, endYear):
     # @ param disasterType : string
-    # @ param startYear : string
-    # @ param endYear : string
+    # @ param startYear : int
+    # @ param endYear : int
     # @ return List<Float> [0.003, 0.005 …]
 */
 
-let getDeathRateList = function(disasterType, startYearStr, endYearStr, targetState = "all") {
+let getDeathRateList = function(disasterType, startYear, endYear, targetState = "all") {
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
         console.log("[Error] No such disaster type!");
         return;
@@ -389,8 +387,6 @@ let getDeathRateList = function(disasterType, startYearStr, endYearStr, targetSt
     let deathDict = data[disasterType].death;
     console.log('deathDict:',deathDict);
     let states = Object.keys(data[disasterType].death);
-    let startYear = parseInt(startYearStr);
-    let endYear = parseInt(endYearStr);
     if (targetState === "all") {
         for (let i = 0; i < STATE_LIST.length; i++) {
             let state = STATE_LIST[i];
