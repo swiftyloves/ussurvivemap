@@ -51,7 +51,7 @@ let getHurricane = new Promise((resolve, reject) => {
         url: 'data/' + HURRICAN_CSV_FILM_NAME,
         dataType: 'text',
         success: function(data){
-            resolve(processHurricaneData(data));
+            resolve(data);
         }
     })
 });
@@ -123,9 +123,9 @@ let processSateData = function(data) {
     return state_population;
 };
 
-let processHurricaneData = function(data) {
-    var dataLines = data.split(/\r\n|\n/);
-    let hurri_dict = {'loaction': {}, 'death': {}}
+let processHurricaneData = function(hurricane_raw_data, state_population) {
+    let dataLines = hurricane_raw_data.split(/\r\n|\n/);
+    let hurri_dict = {'loaction': {}, 'death': {}};
     for (let i = 0; i < dataLines.length; i++) {
         let nums = dataLines[i].split("\t");
         if (nums.length !== EXTRACT_COLUMN_AMOUNT) {
@@ -142,11 +142,11 @@ let processHurricaneData = function(data) {
         }
 
         // [TODO] death_toll needed to be updated to percentage
-        /*if (hurri_dict.death.hasOwnProperty(year)) {
-            hurri_dict.death.year.push(death_toll);
-        } else {
-            hurri_dict.death.year = [ death_toll ];
-        }*/
+        // if (hurri_dict.death.hasOwnProperty(year)) {
+            // hurri_dict.death.year.push(state_population);
+        // } else {
+            // hurri_dict.death.year = [ death_toll ];
+        // }
     }
     return hurri_dict;
 };
@@ -154,7 +154,10 @@ let processHurricaneData = function(data) {
 var data = {}
 $(document).ready(function() {
     getStatePopulation.then(function(state_population){
-        console.log('state_population:',state_population["MI"]['1951']);
+        getHurricane.then((hurricane_raw_data) => {
+            hurricane_data = processHurricaneData(hurricane_raw_data, state_population);
+            data['hurricane'] = hurricane_data;
+        });
     });
 
 });
