@@ -1,15 +1,18 @@
 var disasterNames = ["earthquake", "gunshot" ,"hurricane", "tornado"];
 var min_death_rate =  0;
 var max_death_rate = 0.1;
+var pivot_death_rate = (min_death_rate + max_death_rate )/2;
 //Width and height of map
 var disasterToColorMapping = {
     "earthquake": "brown",
     "gunshot":  "black",
     "hurricane": "blue", 
     "tornado": "red"};
+    
 function disaster_to_color(color) {
     return disasterToColorMapping[color]
 }
+
 var width = 960;
 var height = 500;
 var stateNamePairs = [
