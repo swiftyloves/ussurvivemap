@@ -53,7 +53,7 @@ let STATE_POPULATION_CSV_FILE_NAME = 'state_population_data_clean.csv';
 let TORNADOES_CSV_FILE_NAME = 'tornadoes_clean_manual.csv';
 let HURRICAN_CSV_FILE_NAME = 'hurricane_clean_year_manual.csv';
 let GUNSHOT_CSV_FILE_NAME = 'gunshot_clean_manual.csv';
-let STORMS_CSV_FILE_NAME = 'storm_clean_manual.csv';
+let STORMS_CSV_FILE_NAME = 'hurricane_clean_2.csv';
 let EARTHQUAKE_CSV_FILE_NAME = 'earthquake_clean_manual.csv';
 
 let EARLIER_YEAR = 1950;
@@ -475,10 +475,11 @@ $(document).ready(function() {
             storm_data = processStormData(storm_raw_data, state_population);
             earthquake_data = processEarthquakeData(earthquake_raw_data, state_population);
 
-            data['hurricane'] = hurricane_data;
-            data['tornado'] = tornadoes_data;
+
+            // data['hurricane'] = hurricane_data;
+            data['tornadoes'] = tornadoes_data;
             data['gunshot'] = gunshot_data;
-            data['storm'] = storm_data;
+            data['hurricane'] = storm_data;
             data['earthquake'] = earthquake_data;
             return data;
         });
