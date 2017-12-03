@@ -21,21 +21,21 @@
     <h1>Where's the safest place in the U.S.?</h1>
     <h2>Select Disaster Types</h2>
     <div class="type">
-        <input type="checkbox" id="earthquake_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
+        <input type="checkbox" id="earthquake_checkbox" class="check" onclick = "refreshMap()"/>
         <label for="earthquake" class="side-label">Earthquake</label>
-        <input type="checkbox" id="gunshot_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
+        <input type="checkbox" id="gunshot_checkbox" class="check" onclick = "refreshMap()"/>
         <label for="gunshot" class="side-label">Gunshot</label>
-        <input type="checkbox" id="hurricane_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
+        <input type="checkbox" id="hurricane_checkbox" class="check" onclick = "refreshMap()"/>
         <label for="hurricane" class="side-label">Hurricane</label>
-        <input type="checkbox" id="tornado_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
+        <input type="checkbox" id="tornado_checkbox" class="check" onclick = "refreshMap()"/>
         <label for="tornado" class="side-label">Tornado</label>
     </div>
     <h2>Choose Data Type</h2>
     <div class="switch">
-        <input type="radio" name="dataType" checked="checked" />
-        <label for="incident" class="switch-label" id="incident" checked="checked">By Incidents</label>
-        <input type="radio" name="dataType"/>
-        <label for="states" class="switch-label" id="state">By State</label>
+        <input type="radio" name="dataType", id="plot_disaster_location_radio" checked="checked", onclick = "refreshMap()"/>
+        <label for="incident" class="switch-label"  checked="checked", >Disaster Location</label>
+        <input type="radio" name="dataType", id="plot_plot_state_deathrate_radio", onclick = "refreshMap()"/>
+        <label for="states" class="switch-label" >State Death Rate</label>
      </div>
     <script type="text/javascript">
     

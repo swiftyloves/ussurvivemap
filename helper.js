@@ -402,7 +402,7 @@ let processEarthquakeData = function(earthquake_raw_data, state_population) {
     }
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
-        if (nums.length < 5) {
+        if (nums.length < 4) {
             console.log('nums:',nums)
             console.log('[Error] Amount of desired column is not right.')
             console.log('Error dataLines ',i, ": ",dataLines[i])
@@ -522,7 +522,7 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
         for (let i = 0; i < STATE_LIST.length; i++) {
             let state = STATE_LIST[i];
             for (let j = startYear; j <= endYear; j++) {
-                let year = startYear.toString();
+                let year = j.toString();
                 if (locationDict[state][year] !== undefined) {
                     disaLocationList = disaLocationList.concat(locationDict[state][year]);
                 }

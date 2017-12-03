@@ -115,8 +115,8 @@ function drawLineChart(state, disaster, startYear, endYear) {
 }
 
 function updateDisasterDotOnMap() {
-    svg.selectAll("circle").remove();
-    var disaster_data = []
+    resetDisasterDotOnMap();
+    var disaster_data = [];
     for (dd in disasterNames) {
         if (d3.select('#' + disasterNames[dd] + "_checkbox").property("checked")) {
             var startYear = $('#amount-min').val();
@@ -152,9 +152,24 @@ function updateDisasterDotOnMap() {
         .style("opacity", 0.85)
         .style('stroke', "black")
 }   
-
-function refreshCheckBoxResult() {
-    updateStateDeathRateOnMap();
+function resetStateDeathRateOnMap() {
+    for (s in stateNamePairs) {
+        var state_name = stateNamePairs[s][0];
+        var state_abbr = abbrState(state_name, "abbr");
+        var state_poly = d3.select("#" + state_to_state_polygon(state_abbr));
+        state_poly.style("fill", "gray");
+    }
+}
+function resetDisasterDotOnMap() {
+    svg.selectAll("circle").remove();    
+}
+function refreshMap() {
     updateStateDeathRateOnLineChart();
-    updateDisasterDotOnMap();
+    if (d3.select("#plot_disaster_location_radio").property("checked")) {
+        resetStateDeathRateOnMap();
+        updateDisasterDotOnMap();
+    } else {
+        resetDisasterDotOnMap();
+        updateStateDeathRateOnMap();
+    }
 }
