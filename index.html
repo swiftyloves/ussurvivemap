@@ -9,11 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript" src="effect.js"></script>
     <script src="assets/js/def.js" ></script>
-    <script src="assets/js/utility.js" ></script>
-    <script src="helper.js" ></script>
     <script src="assets/js/map_update.js" ></script>
     <script src="assets/js/fake_data_generator.js" ></script>
-    <script src="assets/js/function_docking.js" ></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
@@ -21,7 +18,7 @@
     <h1>Where's the safest place in the U.S.?</h1>
     <h2>Select Disaster Types</h2>
     <div class="type">
-        <input type="checkbox" id="earthquake_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
+        <input type="checkbox" id="earthquake_checkbox" class="check" onclick = "refreshCheckBoxResult()" checked="checked"/>
         <label for="earthquake" class="side-label">Earthquake</label>
         <input type="checkbox" id="gunshot_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
         <label for="gunshot" class="side-label">Gunshot</label>
@@ -30,10 +27,22 @@
         <input type="checkbox" id="tornado_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
         <label for="tornado" class="side-label">Tornado</label>
     </div>
+    <h2>Choose Data Type</h2>
+    <div class="switch">
+        <input type="radio" name="dataType" checked="checked">
+        <label for="incident" class="switch-label" id="incident" checked="checked">By Incidents</label>
+        <input type="radio" name="dataType">
+        <label for="states" class="switch-label" id="state">By State</label>
+    </div>
     <script type="text/javascript">
-    
+    //Width and height of map
+    var width = 960;
+    var height = 500;
 
-    
+    // D3 Projection
+    var projection = d3.geo.albersUsa()
+        .translate([width / 2, height / 2]) // translate to center of screen
+        .scale([1000]); // scale things down so see entire US
 
     // Define path generator
     var path = d3.geo.path() // path generator that will convert GeoJSON to SVG paths
@@ -99,7 +108,7 @@
                 .attr("d", path)
                 .style("stroke", "#fff")
                 .style("stroke-width", "1")
-                .attr("id", function(d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr"))})
+                .attr("id", function(d, i) { return state_to_state_polygon(d.properties.stateName)})
                 .style("fill", function (d) {
 
                     // Get data value
@@ -116,43 +125,42 @@
 
 
             // Map the cities I have lived in!
-            // d3.csv("cities-lived.csv", function (data) {
+            d3.csv("cities-lived.csv", function (data) {
 
-            //     svg.selectAll("circle")
-            //         .data(data)
-            //         .enter()
-            //         .append("circle")
-            //         .attr("cx", function (d) {
-            //             console.log(d)
-            //             return projection([d.lon, d.lat])[0];
-            //         })
-            //         .attr("cy", function (d) {
-            //             return projection([d.lon, d.lat])[1];
-            //         })
-            //         .attr("r", function (d) {
-            //             return Math.sqrt(d.years) * 4;
-            //         })
-            //         .style("fill", "rgb(217,91,67)")
-            //         .style("opacity", 0.85)
+                svg.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", function (d) {
+                        return projection([d.lon, d.lat])[0];
+                    })
+                    .attr("cy", function (d) {
+                        return projection([d.lon, d.lat])[1];
+                    })
+                    .attr("r", function (d) {
+                        return Math.sqrt(d.years) * 4;
+                    })
+                    .style("fill", "rgb(217,91,67)")
+                    .style("opacity", 0.85)
 
-            //         // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
-            //         // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
-            //         .on("mouseover", function (d) {
-            //             div.transition()
-            //                 .duration(200)
-            //                 .style("opacity", .9);
-            //             div.text(d.place)
-            //                 .style("left", (d3.event.pageX) + "px")
-            //                 .style("top", (d3.event.pageY - 28) + "px");
-            //         })
+                    // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+                    // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                    .on("mouseover", function (d) {
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        div.text(d.place)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                    })
 
-            //         // fade out tooltip on mouse out               
-            //         .on("mouseout", function (d) {
-            //             div.transition()
-            //                 .duration(500)
-            //                 .style("opacity", 0);
-            //         });
-            // });
+                    // fade out tooltip on mouse out               
+                    .on("mouseout", function (d) {
+                        div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+            });
 
             // Modified Legend Code from Mike Bostock: http://bl.ocks.org/mbostock/3888852
             var legend = d3.select("body").append("svg")
@@ -194,33 +202,14 @@
             <div id="slider-range"></div>
         </div>
         <div class="earthquakeChart">
-            <p>Earthquake</p>
-        </div>
+            <p>Earthquake</p><img src="chartTemp.png" alt=""></div>
         <div class="gunshotChart">
-            <p>Gunshot</p>
-        </div>
+            <p>Gunshot</p><img src="chartTemp.png" alt=""></div>
         <div class="hurricaneChart">
-            <p>Hurricane</p>
-        </div>
+            <p>Hurricane</p><img src="chartTemp.png" alt=""></div>
         <div class="tornadoChart">
-            <p>Tornado</p>
-        </div>
+            <p>Tornado</p><img src="chartTemp.png" alt=""></div>
     </div>
-    <script>
-        for (disaster of disasterNames) {
-            let chartsvg = d3.select("." + disaster + "Chart")
-                .append("svg")
-                .attr("width", chartWidth + chartMargin.left + chartMargin.right)
-                .attr("height", chartHeight + chartMargin.top + chartMargin.bottom)
-                .append("g")
-                .attr("class", disaster + "ChartGroup")
-                .attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
-            // chartsvg.append("path").attr("class", disaster + "Path");
-            // chartsvg.append("g").attr("class", disaster + "X");
-            // chartsvg.append("g").attr("class", disaster + "Y");
-        }
-        updateStateDeathRateOnLineChart();
-    </script>
     <div id="safeBar"></div>
 </body>
 </html>
