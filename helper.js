@@ -562,6 +562,8 @@ let getDeathRateList = function(disasterType, startYear, endYear, targetState = 
             let year = y.toString();
             if (deathDict[targetState][year] !== undefined) {
                 deathRateList.push(deathDict[targetState][year]);
+            } else {
+                deathRateList.push(0);
             }
         }
     }
