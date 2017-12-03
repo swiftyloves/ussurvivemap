@@ -194,14 +194,33 @@
             <div id="slider-range"></div>
         </div>
         <div class="earthquakeChart">
-            <p>Earthquake</p><img src="chartTemp.png" alt=""></div>
+            <p>Earthquake</p>
+        </div>
         <div class="gunshotChart">
-            <p>Gunshot</p><img src="chartTemp.png" alt=""></div>
+            <p>Gunshot</p>
+        </div>
         <div class="hurricaneChart">
-            <p>Hurricane</p><img src="chartTemp.png" alt=""></div>
+            <p>Hurricane</p>
+        </div>
         <div class="tornadoChart">
-            <p>Tornado</p><img src="chartTemp.png" alt=""></div>
+            <p>Tornado</p>
+        </div>
     </div>
+    <script>
+        for (disaster of disaster_names) {
+            let chartsvg = d3.select("." + disaster + "Chart")
+                .append("svg")
+                .attr("width", chartWidth + chartMargin.left + chartMargin.right)
+                .attr("height", chartHeight + chartMargin.top + chartMargin.bottom)
+                .append("g")
+                .attr("class", disaster + "ChartGroup")
+                .attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
+            // chartsvg.append("path").attr("class", disaster + "Path");
+            // chartsvg.append("g").attr("class", disaster + "X");
+            // chartsvg.append("g").attr("class", disaster + "Y");
+        }
+        updateStateDeathRateOnLineChart();
+    </script>
     <div id="safeBar"></div>
 </body>
 </html>

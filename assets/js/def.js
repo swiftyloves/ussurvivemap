@@ -85,3 +85,8 @@ function abbrState(input, to){
         }    
     }
 }
+
+// for chart
+var chartMargin = {top: 20, right: 20, bottom: 20, left: 20};
+var chartWidth = 400;
+var chartHeight = 100;
