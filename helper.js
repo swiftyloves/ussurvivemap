@@ -530,7 +530,7 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
         }
     } else {
         for (let j = startYear; j <= endYear; j++) {
-            let year = startYear.toString();
+            let year = j.toString();
             if (locationDict[targetState][year] !== undefined) {
                 disaLocationList = disaLocationList.concat(locationDict[targetState][year]);
             }
