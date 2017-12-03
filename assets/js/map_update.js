@@ -92,7 +92,9 @@ function updateDisasterDotOnMap() {
             return projection([d.long, d.lat])[1];
         })
         .attr("r",5)
-        .style("fill", "rgb(217,91,67)")
+        .style("fill",  function (d) {
+            return disaster_to_color(d.name);
+        })
         .style("opacity", 0.85)
     
 }
