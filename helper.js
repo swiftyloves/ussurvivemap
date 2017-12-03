@@ -249,10 +249,10 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
 
 let processGunshotData = function(gunshot_raw_data, state_population) {
     let dataLines = gunshot_raw_data.split(/\r\n|\n/);
-    let gunshot_dict = {'location': {}, 'death': {}};
+    var gunshot_dict = {'location': {}, 'death': {}};
     for (let i = 0; i < STATE_LIST.length; i++) {
         gunshot_dict.location[STATE_LIST[i]] = {};
-        gunshot_dict.death[STATE_LIST[i]] = 0.0;
+        gunshot_dict.death[STATE_LIST[i]] = {};
     }
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
@@ -295,7 +295,7 @@ let processGunshotData = function(gunshot_raw_data, state_population) {
             continue;
         }
         let locationArr = [parseFloat(nums[2].trim()), parseFloat(nums[3].trim())];
-        let death = parseInt(nums[4]);
+        let death_num = parseInt(nums[4]);
 
         if (gunshot_dict.location[state].hasOwnProperty(year)) {
             gunshot_dict.location[state][year].push(locationArr);
@@ -304,9 +304,9 @@ let processGunshotData = function(gunshot_raw_data, state_population) {
         }
 
         if (gunshot_dict.death[state].hasOwnProperty(year)) {
-            gunshot_dict.death[state][year] = gunshot_dict.death[state][year] + death;
+            gunshot_dict.death[state][year] = gunshot_dict.death[state][year] + death_num;
         } else {
-            gunshot_dict.death[state][year] = death;
+            gunshot_dict.death[state][year] = death_num;
         }
     }
 
@@ -331,7 +331,7 @@ let processStormData = function(strom_raw_data, state_population) {
     let storm_dict = {'location': {}, 'death': {}};
     for (let i = 0; i < STATE_LIST.length; i++) {
         storm_dict.location[STATE_LIST[i]] = {};
-        storm_dict.death[STATE_LIST[i]] = 0.0;
+        storm_dict.death[STATE_LIST[i]] = {};
     }
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
@@ -398,7 +398,7 @@ let processEarthquakeData = function(earthquake_raw_data, state_population) {
     let earthquake_dict = {'location': {}, 'death': {}};
     for (let i = 0; i < STATE_LIST.length; i++) {
         earthquake_dict.location[STATE_LIST[i]] = {};
-        earthquake_dict.death[STATE_LIST[i]] = 0.0;
+        earthquake_dict.death[STATE_LIST[i]] = {};
     }
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
@@ -447,6 +447,9 @@ let processEarthquakeData = function(earthquake_raw_data, state_population) {
 
     for (let i = 0; i < STATE_LIST.length; i++) {
         let state = STATE_LIST[i];
+        if (state == "DummyState") {
+            continue;
+        }
         if (earthquake_dict.death[state] !== undefined) {
             let years = Object.keys(earthquake_dict.death[state]);
             for (let j = 0; j < years.length; j++) {
