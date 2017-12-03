@@ -53,6 +53,7 @@ let STATE_POPULATION_CSV_FILE_NAME = 'state_population_data_clean.csv';
 let TORNADOES_CSV_FILE_NAME = 'tornadoes_clean_manual.csv';
 let HURRICAN_CSV_FILE_NAME = 'hurricane_clean_year_manual.csv';
 let GUNSHOT_CSV_FILE_NAME = 'gunshot_clean_manual.csv';
+let STORMS_CSV_FILE_NAME = 'storm_clean_manual.csv';
 
 let EARLIER_YEAR = 1950;
 let LAST_YEAR = 2015;
@@ -97,6 +98,17 @@ let getTornadoes = new Promise((resolve, reject) => {
     $.ajax({
         type: 'GET',
         url: 'data/' + TORNADOES_CSV_FILE_NAME,
+        dataType: 'text',
+        success: function(data){
+            resolve(data);
+        }
+    })
+});
+
+let getStorms = new Promise((resolve, reject) => {
+    $.ajax({
+        type: 'GET',
+        url: 'data/' + STORMS_CSV_FILE_NAME,
         dataType: 'text',
         success: function(data){
             resolve(data);
@@ -302,20 +314,96 @@ let processGunshotData = function(gunshot_raw_data, state_population) {
     return gunshot_dict;
 };
 
+
+let processStormData = function(strom_raw_data, state_population) {
+    let dataLines = strom_raw_data.split(/\r\n|\n/);
+    let storm_dict = {'location': {}, 'death': {}};
+    for (let i = 0; i < STATE_LIST.length; i++) {
+        storm_dict.location[STATE_LIST[i]] = {};
+        storm_dict.death[STATE_LIST[i]] = 0.0;
+    }
+    console.log('storm_dict init:',storm_dict)
+    console.log('dataLines.length:',dataLines.length)
+    for (let i = 0; i < dataLines.length - 1; i++) {
+        let nums = dataLines[i].split("\t");
+        if (nums.length < 6) {
+            console.log('nums:',nums)
+            console.log('[Error] Amount of desired column is not right.')
+            console.log('Error dataLines ',i, ": ",dataLines[i])
+            continue;
+        }
+        // Work around to complete year to four digit
+        let year = nums[0];
+
+        // Work around to covert state to abbr
+        let state = nums[1];
+        // console.log('location:',location);
+        console.log('state:',state);
+        console.log('state.toLowerCase():',state.toLowerCase());
+        state = state.replace(/\"/g, "").toLowerCase();
+        console.log('state:',state);
+        if (STATE_LIST.indexOf(state) === -1) {
+            state = abbrState(state, 'abbr');
+        }
+        if (state === 'error') { // skip error
+            console.log('state error:', state);
+            continue;
+        }
+        if (STATE_LIST.indexOf(state) === -1) {
+            console.log('state not found:', state);
+            continue;
+        }
+
+        let locationArr = [parseFloat(nums[2].trim()), parseFloat(nums[3].trim())];
+        let death = parseInt(nums[4]) + parseInt(nums[5]);
+
+        if (storm_dict.location[state].hasOwnProperty(year)) {
+            storm_dict.location[state][year].push(locationArr);
+        } else {
+            storm_dict.location[state][year] = [ locationArr ];
+        }
+
+        if (storm_dict.death[state].hasOwnProperty(year)) {
+            storm_dict.death[state][year] = storm_dict.death[state][year] + death;
+        } else {
+            storm_dict.death[state][year] = death;
+        }
+        console.log('storm_dict:',storm_dict);
+    }
+
+    for (let i = 0; i < STATE_LIST.length; i++) {
+        let state = STATE_LIST[i];
+        if (storm_dict.death[state] !== undefined) {
+            let years = Object.keys(storm_dict.death[state]);
+            for (let j = 0; j < years.length; j++) {
+                storm_dict.death[state][years[j]] = storm_dict.death[state][years[j]] / state_population[state][years[j]] * DEATH_TOLL_PROPORTION;
+                if (storm_dict.death[state][years[j]] == 0 || isNaN(storm_dict.death[state][years[j]])) {
+                    delete storm_dict.death[state][years[j]];
+                }
+            }
+        }
+    };
+    return storm_dict;
+};
+
+
 var data = {};
 $(document).ready(function() {
     getStatePopulation.then(function(state_population){
-        return Promise.all([getTornadoes, getHurricane, getGunshot]).then(values => {
+        return Promise.all([getTornadoes, getHurricane, getGunshot, getStorms]).then(values => {
             let tornadoes_raw_data = values[0];
             let hurricane_raw_data = values[1];
             let gunshot_raw_data = values[2];
+            let storm_raw_data = values[3];
             tornadoes_data = processTornadoesData(tornadoes_raw_data, state_population);
             hurricane_data = processHurricaneData(hurricane_raw_data, state_population);
             gunshot_data = processGunshotData(gunshot_raw_data, state_population);
+            storm_data = processStormData(storm_raw_data, state_population);
 
             data['hurricane'] = hurricane_data;
             data['tornadoes'] = tornadoes_data;
             data['gunshot'] = gunshot_data;
+            data['storm'] = storm_data;
             return data;
         });
     }).then(function(data){
