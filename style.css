@@ -1,0 +1,178 @@
+/* On mouse hover, lighten state color */
+
+path:hover {
+    fill-opacity: .7;
+}
+
+
+/* Style for Custom Tooltip */
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: white;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+body {
+    font-family: sans-serif;
+    ;
+    position: relative;
+    color: #59595A;
+    font-size: 0.8em;
+}
+
+
+/* Legend Position Style */
+
+.legend {
+    font: 11px sans-serif;
+    position: absolute;
+    left: 700px;
+    top: 350px;
+}
+
+h1 {
+    text-align: center;
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+}
+
+.type {
+    text-align: center;
+}
+
+.map {
+    float: left;
+    margin-left: -7%;
+}
+
+.lineChart {
+    height: 80vh;
+    width: 30%;
+    overflow: auto;
+    float: right;
+}
+
+.lineChart img {
+    width: 100%;
+}
+
+#safeBar {
+    float: left;
+    margin: auto;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: 65%;
+    height: 20px;
+    border-radius: 10px;
+    background: white;
+    background: -webkit-linear-gradient(right, #D34B4B, #FFDD9E, #3EB54D);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(left, #D34B4B, #FFDD9E, #3EB54D);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(left, #D34B4B, #FFDD9E, #3EB54D);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(left, #D34B4B, #FFDD9E, #3EB54D);
+    /* Standard syntax */
+    vertical-align: center;
+}
+
+#safeBar::before {
+    content: "Safe";
+    float: left;
+    margin-top: -3%;
+    color: #3EB54D;
+}
+
+#safeBar::after {
+    content: "Dangerous";
+    float: right;
+    margin-top: -3%;
+    color: #D34B4B;
+}
+
+
+/*year slider begin*/
+
+.slider_txt {
+    margin-top: 10px;
+    left: 0;
+    font-size: 12px;
+    vertical-align: center;
+}
+
+.yearSlider input {
+    display: inline-block;
+    font-size: 13px;
+    text-align: center;
+}
+
+#slider-range {
+    position: relative;
+    margin: auto;
+    height: 15px;
+    border-radius: 10px;
+    background: white;
+    background: #AAAAAA;
+    vertical-align: center;
+    width: 90%;
+}
+
+#slider-range .ui-slider-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-top: -5px;
+    margin-left: -10px;
+    border: solid 3px #696969;
+    border-radius: 100px;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+#slider-range .ui-corner-all {
+    border-radius: 50%;
+}
+
+
+/*year slider end*/
+
+
+.default-line { 
+    stroke: lightgray;
+    stroke-width: 2;
+    fill: none;
+}
+
+.selected-line { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.default-area {
+    fill: WhiteSmoke;
+}
+
+.selected-area {
+    fill: lightsteelblue;
+}
