@@ -477,7 +477,7 @@ $(document).ready(function() {
 
 
             // data['hurricane'] = hurricane_data;
-            data['tornadoes'] = tornadoes_data;
+            data['tornado'] = tornadoes_data;
             data['gunshot'] = gunshot_data;
             data['hurricane'] = storm_data;
             data['earthquake'] = earthquake_data;
