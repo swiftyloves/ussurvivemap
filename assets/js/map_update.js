@@ -44,24 +44,77 @@ function updateStateDeathRateOnMap() {
 
 function updateStateDeathRateOnLineChart() {
     let state = 'MI';
-    let startYear = $('#amount-min').val();
-    let endYear = $('#amount-max').val();
+    let startYear = +$('#amount-min').val();
+    let endYear = +$('#amount-max').val();
 
     for (disaster of disaster_names) {
         drawLineChart(state, disaster, startYear, endYear);
     }
 }
 
-// function drawLineChart(state, disaster, startYear, endYear) {
-//     var margin = {top: 20, right: 20, bottom: 20, left: 20};
-//     var width = 400;
-//     var height = 100;
+function drawLineChart(state, disaster, startYear, endYear) {
+    var data = getFakeDeathRateListOfState(state, disaster, startYear, endYear);
+    // console.log(data);
+    // startYear = 100;
+    // endYear = startYear + 21;
+    // var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-//     // Set ranges
-//     var x = d3.scaleLinear().range([0, width]);
-//     var y = d3.scaleLinear().range([height, 0]);
-// }
+    // Set ranges
+    var x = d3.scale.linear()
+        .range([0, chartWidth])
+        .domain([startYear, endYear]);
+    var y = d3.scale.linear()
+        .range([chartHeight, 0])
+        .domain([0, d3.max(data)]);
 
+    // Define the axes
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    // Define line
+    var valueLine = d3.svg.line()
+        .x(function (_, i) { return x(i + startYear); })
+        .y(function (d) { return y(d); });
+
+    var area = d3.svg.area()
+        .x(function(d, i) { return x(i + startYear); })
+        .y0(chartHeight)
+        .y1(function(d) { return y(d); });
+
+    var chartSvg = d3.select("." + disaster + "ChartGroup");
+    chartSvg.selectAll(".axis").remove();
+    chartSvg.selectAll("path").remove();
+
+    chartSvg.append("path")
+        .attr("class", function() {
+            if (d3.select('#' + disaster + "_checkbox").property("checked")) {
+                return "selected-area";
+            } else {
+                return "default-area";
+            }
+        })
+        .attr("d", area(data));
+    chartSvg.append("path")
+        .attr("class", function() {
+            if (d3.select('#' + disaster + "_checkbox").property("checked")) {
+                return "selected-line";
+            } else {
+                return "default-line";
+            }
+        })
+        .attr("d", valueLine(data));
+    chartSvg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + chartHeight + ")")
+        .call(xAxis);
+    chartSvg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
 function updateDisasterDotOnMap() {
     // svg.selectAll("circle").html("")s
