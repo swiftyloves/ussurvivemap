@@ -1,18 +1,18 @@
-var disaster_names = ["earthquake", "gunshot" ,"hurricane", "tornado"];
+var disasterNames = ["earthquake", "gunshot" ,"hurricane", "tornado"];
 var min_death_rate =  0;
-var max_death_rate = 0.005;
+var max_death_rate = 0.1;
 //Width and height of map
-var disaster_to_color_mapping = {
+var disasterToColorMapping = {
     "earthquake": "brown",
     "gunshot":  "black",
     "hurricane": "blue", 
     "tornado": "red"};
 function disaster_to_color(color) {
-    return disaster_to_color_mapping[color]
+    return disasterToColorMapping[color]
 }
 var width = 960;
 var height = 500;
-var state_name_pairs = [
+var stateNamePairs = [
     ['Arizona', 'AZ'],
     ['Alabama', 'AL'],
     ['Alaska', 'AK'],
@@ -71,16 +71,16 @@ function abbrState(input, to){
     if (typeof input == 'undefined') return "";
     if (to == 'abbr'){
         input = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-        for(i = 0; i < state_name_pairs.length; i++){
-            if(state_name_pairs[i][0] == input){
-                return(state_name_pairs[i][1]);
+        for(i = 0; i < stateNamePairs.length; i++){
+            if(stateNamePairs[i][0] == input){
+                return(stateNamePairs[i][1]);
             }
         }    
     } else if (to == 'name'){
         input = input.toUpperCase();
-        for(i = 0; i < state_name_pairs.length; i++){
-            if(state_name_pairs[i][1] == input){
-                return(state_name_pairs[i][0]);
+        for(i = 0; i < stateNamePairs.length; i++){
+            if(stateNamePairs[i][1] == input){
+                return(stateNamePairs[i][0]);
             }
         }    
     }

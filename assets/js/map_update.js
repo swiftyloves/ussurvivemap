@@ -14,32 +14,35 @@ function state_to_state_polygon(state_name) {
 var deathToColor = d3.scale.linear()
     .domain([min_death_rate, max_death_rate])
     .range(["rgb(236,236,236)", "rgb(62,181,77)", "rgb(255,221,158)", "rgb(211,75,75)"]);
+function summarizeDeathRate(deathRateList) {
+    return sum(deathRateList);
+}
 
 function updateStateDeathRateOnMap() {
-    var state_death_rates = {}
-    for (s in state_name_pairs) {
-        state_death_rates[state_name_pairs[s][0]] = 0;
-    }
-    for (dd in disaster_names) {
-        if (d3.select('#' + disaster_names[dd] + "_checkbox").property("checked")) {
-            var startYear = $('#amount-min').val();
-            var endYear = $('#amount-max').val();
-            var death_rate_list = getFakeDeathRateList(disaster_names[dd], startYear, endYear);
-            for (s in state_name_pairs) {
-                state_death_rates[state_name_pairs[s][0]] += death_rate_list[state_name_pairs[s][0]];
+    var stateDeathRates = {}
+    for (s in stateNamePairs) {
+        var stateName = stateNamePairs[s][0];
+        stateDeathRates[stateName] = 0;
+        for (dd in disasterNames) {
+            if (d3.select('#' + disasterNames[dd] + "_checkbox").property("checked")) {
+                var startYear = $('#amount-min').val();
+                var endYear = $('#amount-max').val();
+                var stateAbbr = abbrState(stateName,'abbr');
+                var deathRateList = getDeathRateListInUse(disasterNames[dd], startYear, endYear, stateAbbr);
+                stateDeathRates[stateName] += summarizeDeathRate(deathRateList);
             }
         }
     }
+    
 
-    for (s in state_name_pairs) {
-        var state_name = state_name_pairs[s][0];
-        var death_rate = state_death_rates[state_name];
+    for (s in stateNamePairs) {
+        var state_name = stateNamePairs[s][0];
+        var death_rate = stateDeathRates[state_name];
         var state_abbr = abbrState(state_name, "abbr");
         var state_poly = d3.select("#" + state_to_state_polygon(state_abbr));
         state_poly.style("fill",deathToColor(death_rate));
     }
-
-    var NM = d3.select("#" + state_to_state_polygon("New Mexico"));
+    console.log(stateDeathRates);
 }
 
 function updateStateDeathRateOnLineChart() {
@@ -47,7 +50,7 @@ function updateStateDeathRateOnLineChart() {
     let startYear = +$('#amount-min').val();
     let endYear = +$('#amount-max').val();
 
-    for (disaster of disaster_names) {
+    for (disaster of disasterNames) {
         drawLineChart(state, disaster, startYear, endYear);
     }
 }
@@ -120,16 +123,16 @@ function updateDisasterDotOnMap() {
     // svg.selectAll("circle").html("")s
     svg.selectAll("circle").remove()
     var disaster_data = []
-    for (dd in disaster_names) {
-        if (d3.select('#' + disaster_names[dd] + "_checkbox").property("checked")) {
+    for (dd in disasterNames) {
+        if (d3.select('#' + disasterNames[dd] + "_checkbox").property("checked")) {
             var startYear = $('#amount-min').val();
             var endYear = $('#amount-max').val();
-            var disaster_locs = getFakeDisasterLocationList(disaster_names[dd] , startYear, endYear);
+            var disaster_locs = getDisasterLocationListInUse(disasterNames[dd] , startYear, endYear);
             for (dl in disaster_locs) {
                 disaster_data.push( {
                     'long' : disaster_locs[dl][0].toString(),
                     'lat' : disaster_locs[dl][1].toString(),
-                    'name' : disaster_names[dd]
+                    'name' : disasterNames[dd]
                 })
             }
         }
