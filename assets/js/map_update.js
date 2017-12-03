@@ -73,20 +73,35 @@ function drawLineChart(state, disaster, startYear, endYear) {
 
     // Define line
     var valueLine = d3.svg.line()
-        .x(function (_, i) {
-            return x(i + startYear);
-        })
-        .y(function (d) {
-            // console.log(d, y(d));
-            return y(d);
-        });
+        .x(function (_, i) { return x(i + startYear); })
+        .y(function (d) { return y(d); });
+
+    var area = d3.svg.area()
+        .x(function(d, i) { return x(i + startYear); })
+        .y0(chartHeight)
+        .y1(function(d) { return y(d); });
 
     var chartSvg = d3.select("." + disaster + "ChartGroup");
     chartSvg.selectAll(".axis").remove();
     chartSvg.selectAll("path").remove();
 
     chartSvg.append("path")
-        .attr("class", "line")
+        .attr("class", function() {
+            if (d3.select('#' + disaster + "_checkbox").property("checked")) {
+                return "selected-area";
+            } else {
+                return "default-area";
+            }
+        })
+        .attr("d", area(data));
+    chartSvg.append("path")
+        .attr("class", function() {
+            if (d3.select('#' + disaster + "_checkbox").property("checked")) {
+                return "selected-line";
+            } else {
+                return "default-line";
+            }
+        })
         .attr("d", valueLine(data));
     chartSvg.append("g")
         .attr("class", "x axis")

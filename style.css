@@ -149,7 +149,13 @@ h2 {
 /*year slider end*/
 
 
-path { 
+.default-line { 
+    stroke: lightgray;
+    stroke-width: 2;
+    fill: none;
+}
+
+.selected-line { 
     stroke: steelblue;
     stroke-width: 2;
     fill: none;
@@ -161,4 +167,12 @@ path {
     stroke: grey;
     stroke-width: 1;
     shape-rendering: crispEdges;
+}
+
+.default-area {
+    fill: WhiteSmoke;
+}
+
+.selected-area {
+    fill: lightsteelblue;
 }
