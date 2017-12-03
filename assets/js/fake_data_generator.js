@@ -22,10 +22,10 @@ function getFakeDeathRateListOfState(state, disasterType, startYear, endYear) {
 }
 
 function getFakeDisasterLocationList(disasterType, startYear, endYear) {
-    var min_lat = 24;
+    var min_lat = 25;
     var max_lat = 44;
-    var min_long = 68;
-    var max_long = 125;
+    var min_long = -68;
+    var max_long = -125;
     ret = []
     for (let i = startYear; i <= endYear; ++i) {
         var long = getRandomArbitrary(min_long, max_long);

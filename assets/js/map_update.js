@@ -1,7 +1,9 @@
 
 function refreshCheckBoxResult() {
     updateStateDeathRateOnMap();
-    updateStateDeathRateOnLineChart();
+    // updateStateDeathRateOnLineChart();
+    updateDisasterDotOnMap();
+    
 }
 
 function state_to_state_polygon(state_name) {
@@ -50,12 +52,47 @@ function updateStateDeathRateOnLineChart() {
     }
 }
 
-function drawLineChart(state, disaster, startYear, endYear) {
-    var margin = {top: 20, right: 20, bottom: 20, left: 20};
-    var width = 400;
-    var height = 100;
+// function drawLineChart(state, disaster, startYear, endYear) {
+//     var margin = {top: 20, right: 20, bottom: 20, left: 20};
+//     var width = 400;
+//     var height = 100;
 
-    // Set ranges
-    var x = d3.scaleLinear().range([0, width]);
-    var y = d3.scaleLinear().range([height, 0]);
+//     // Set ranges
+//     var x = d3.scaleLinear().range([0, width]);
+//     var y = d3.scaleLinear().range([height, 0]);
+// }
+
+
+function updateDisasterDotOnMap() {
+    // svg.selectAll("circle").html("")s
+    svg.selectAll("circle").remove()
+    var disaster_data = []
+    for (dd in disaster_names) {
+        if (d3.select('#' + disaster_names[dd] + "_checkbox").property("checked")) {
+            var startYear = $('#amount-min').val();
+            var endYear = $('#amount-max').val();
+            var disaster_locs = getFakeDisasterLocationList(disaster_names[dd] , startYear, endYear);
+            for (dl in disaster_locs) {
+                disaster_data.push( {
+                    'long' : disaster_locs[dl][0].toString(),
+                    'lat' : disaster_locs[dl][1].toString(),
+                    'name' : disaster_names[dd]
+                })
+            }
+        }
+    }
+    svg.selectAll("circle")
+        .data(disaster_data)
+        .enter()
+        .append("circle")
+        .attr("cx", function (d) {
+            return projection([d.long, d.lat])[0];
+        })
+        .attr("cy", function (d) {
+            return projection([d.long, d.lat])[1];
+        })
+        .attr("r",5)
+        .style("fill", "rgb(217,91,67)")
+        .style("opacity", 0.85)
+    
 }

@@ -1,6 +1,9 @@
 var disaster_names = ["earthquake", "gunshot" ,"hurricane", "tornado"];
 var min_death_rate =  0;
 var max_death_rate = 0.005;
+//Width and height of map
+var width = 960;
+var height = 500;
 var state_name_pairs = [
     ['Arizona', 'AZ'],
     ['Alabama', 'AL'],
@@ -57,7 +60,6 @@ var state_name_pairs = [
 ];
 
 function abbrState(input, to){
-    console.log(input)
     if (typeof input == 'undefined') return "";
     if (to == 'abbr'){
         input = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
