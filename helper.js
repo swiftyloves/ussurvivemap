@@ -54,7 +54,7 @@ let TORNADOES_CSV_FILE_NAME = 'tornadoes_clean_manual.csv';
 let HURRICAN_CSV_FILE_NAME = 'hurricane_clean_year_manual.csv';
 let GUNSHOT_CSV_FILE_NAME = 'gunshot_clean_manual.csv';
 let STORMS_CSV_FILE_NAME = 'hurricane_clean_2.csv';
-let EARTHQUAKE_CSV_FILE_NAME = 'earthquake_clean_manual.csv';
+let EARTHQUAKE_CSV_FILE_NAME = 'earthquake_clean_USA_remove.csv';
 
 let EARLIER_YEAR = 1950;
 let LAST_YEAR = 2015;
