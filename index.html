@@ -30,11 +30,16 @@
         <input type="checkbox" id="tornado_checkbox" class="check" onclick = "refreshCheckBoxResult()"/>
         <label for="tornado" class="side-label">Tornado</label>
     </div>
+    <h2>Choose Data Type</h2>
+    <div class="switch">
+        <input type="radio" name="dataType" checked="checked" />
+        <label for="incident" class="switch-label" id="incident" checked="checked">By Incidents</label>
+        <input type="radio" name="dataType"/>
+        <label for="states" class="switch-label" id="state">By State</label>
+     </div>
     <script type="text/javascript">
     
-
     
-
     // Define path generator
     var path = d3.geo.path() // path generator that will convert GeoJSON to SVG paths
         .projection(projection); // tell path generator to use albersUsa projection

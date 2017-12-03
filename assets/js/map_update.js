@@ -6,8 +6,8 @@ function state_to_state_polygon(state_name) {
 
 // Define linear scale for output
 var deathToColor = d3.scale.linear()
-    .domain([min_death_rate, max_death_rate])
-    .range(["rgb(236,236,236)", "rgb(62,181,77)", "rgb(255,221,158)", "rgb(211,75,75)"]);
+    .domain([min_death_rate, pivot_death_rate, max_death_rate])
+    .range(["green", 'yellow',"red"]);
 function summarizeDeathRate(deathRateList) {
     return sum(deathRateList);
 }
@@ -124,8 +124,8 @@ function updateDisasterDotOnMap() {
             var disaster_locs = getDisasterLocationListInUse(disasterNames[dd] , startYear, endYear);
             for (dl in disaster_locs) {
                 disaster_data.push( {
-                    'long' : disaster_locs[dl][0].toString(),
-                    'lat' : disaster_locs[dl][1].toString(),
+                    'long' : disaster_locs[dl][1].toString(),
+                    'lat' : disaster_locs[dl][0].toString(),
                     'name' : disasterNames[dd]
                 })
             }
@@ -136,9 +136,13 @@ function updateDisasterDotOnMap() {
         .enter()
         .append("circle")
         .attr("cx", function (d) {
+            var loc = projection([d.long, d.lat]);
+            if (loc == undefined) return 0;
             return projection([d.long, d.lat])[0];
         })
         .attr("cy", function (d) {
+            var loc = projection([d.long, d.lat]);
+            if (loc == undefined) return 0;
             return projection([d.long, d.lat])[1];
         })
         .attr("r",5)
@@ -146,6 +150,7 @@ function updateDisasterDotOnMap() {
             return disaster_to_color(d.name);
         })
         .style("opacity", 0.85)
+        .style('stroke', "black")
 }   
 
 function refreshCheckBoxResult() {
