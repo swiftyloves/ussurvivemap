@@ -147,8 +147,8 @@ let processSateData = function(data) {
             state_population[states[j]][year.toString()] = population;
         }
         if (year > LAST_YEAR) {
-            console.log('dataLines[i]',dataLines[i]);
-            console.log('[Error] state population data is out of range.')
+            //console.log('dataLines[i]',dataLines[i]);
+            //console.log('[Error] state population data is out of range.')
             break;
         }
         year += 1;
@@ -162,8 +162,8 @@ let processHurricaneData = function(hurricane_raw_data, state_population) {
     for (let i = 0; i < dataLines.length; i++) {
         let nums = dataLines[i].split("\t");
         if (nums.length !== EXTRACT_COLUMN_AMOUNT) {
-            console.log('[Error] Amount of desired column is not right.')
-            console.log('Error dataLines ',i, ": ",dataLines[i])
+            //console.log('[Error] Amount of desired column is not right.')
+            //console.log('Error dataLines ',i, ": ",dataLines[i])
             continue;
         }
         let year = nums[0].trim();
@@ -194,9 +194,9 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
         if (nums.length < 5) {
-            console.log('nums:',nums)
-            console.log('[Error] Amount of desired column is not right.')
-            console.log('Error dataLines ',i, ": ",dataLines[i])
+            //console.log('nums:',nums)
+            //console.log('[Error] Amount of desired column is not right.')
+            //console.log('Error dataLines ',i, ": ",dataLines[i])
             continue;
         }
         let year = nums[0].trim();
@@ -224,7 +224,7 @@ let processTornadoesData = function(tornadoes_raw_data, state_population) {
         if (tornadoes_dict.death[state] !== undefined) {
             let years = Object.keys(tornadoes_dict.death[state]);
             for (let j = 0; j < years.length; j++) {
-                // console.log('tornadoes_dict.death[state][years[j]]:',tornadoes_dict.death[state][years[j]]);
+                // //console.log('tornadoes_dict.death[state][years[j]]:',tornadoes_dict.death[state][years[j]]);
                 tornadoes_dict.death[state][years[j]] = tornadoes_dict.death[state][years[j]] / state_population[state][years[j]] * DEATH_TOLL_PROPORTION;
                 if (tornadoes_dict.death[state][years[j]] == 0 || isNaN(tornadoes_dict.death[state][years[j]])) {
                     delete tornadoes_dict.death[state][years[j]];
@@ -242,19 +242,19 @@ let processGunshotData = function(gunshot_raw_data, state_population) {
         gunshot_dict.location[STATE_LIST[i]] = {};
         gunshot_dict.death[STATE_LIST[i]] = 0.0;
     }
-    console.log('gunshot_dict:',gunshot_dict)
+    //console.log('gunshot_dict:',gunshot_dict)
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
         if (nums.length < 5) {
-            console.log('nums:',nums)
-            console.log('[Error] Amount of desired column is not right.')
-            console.log('Error dataLines ',i, ": ",dataLines[i])
+            //console.log('nums:',nums)
+            //console.log('[Error] Amount of desired column is not right.')
+            //console.log('Error dataLines ',i, ": ",dataLines[i])
             continue;
         }
         // Work around to complete year to four digit
         let year_surfix = (nums[0].split("/"))[2];
         if (year_surfix == undefined) {
-            console.log(nums)
+            //console.log(nums)
         }
         let year = year_surfix;
         if (year_surfix.length == 2) {
@@ -272,7 +272,7 @@ let processGunshotData = function(gunshot_raw_data, state_population) {
             continue;
         }
         let state = location[1].trim();
-        // console.log('location:',location);
+        // //console.log('location:',location);
         if (STATE_LIST.indexOf(state) === -1) {
             state = abbrState(state,'abbr')
         }
@@ -322,14 +322,14 @@ let processStormData = function(strom_raw_data, state_population) {
         storm_dict.location[STATE_LIST[i]] = {};
         storm_dict.death[STATE_LIST[i]] = 0.0;
     }
-    console.log('storm_dict init:',storm_dict)
-    console.log('dataLines.length:',dataLines.length)
+    //console.log('storm_dict init:',storm_dict)
+    //console.log('dataLines.length:',dataLines.length)
     for (let i = 0; i < dataLines.length - 1; i++) {
         let nums = dataLines[i].split("\t");
         if (nums.length < 6) {
-            console.log('nums:',nums)
-            console.log('[Error] Amount of desired column is not right.')
-            console.log('Error dataLines ',i, ": ",dataLines[i])
+            //console.log('nums:',nums)
+            //console.log('[Error] Amount of desired column is not right.')
+            //console.log('Error dataLines ',i, ": ",dataLines[i])
             continue;
         }
         // Work around to complete year to four digit
@@ -337,20 +337,20 @@ let processStormData = function(strom_raw_data, state_population) {
 
         // Work around to covert state to abbr
         let state = nums[1];
-        // console.log('location:',location);
-        console.log('state:',state);
-        console.log('state.toLowerCase():',state.toLowerCase());
+        // //console.log('location:',location);
+        //console.log('state:',state);
+        //console.log('state.toLowerCase():',state.toLowerCase());
         state = state.replace(/\"/g, "").toLowerCase();
-        console.log('state:',state);
+        //console.log('state:',state);
         if (STATE_LIST.indexOf(state) === -1) {
             state = abbrState(state, 'abbr');
         }
         if (state === 'error') { // skip error
-            console.log('state error:', state);
+            //console.log('state error:', state);
             continue;
         }
         if (STATE_LIST.indexOf(state) === -1) {
-            console.log('state not found:', state);
+            //console.log('state not found:', state);
             continue;
         }
 
@@ -368,7 +368,7 @@ let processStormData = function(strom_raw_data, state_population) {
         } else {
             storm_dict.death[state][year] = death;
         }
-        console.log('storm_dict:',storm_dict);
+        //console.log('storm_dict:',storm_dict);
     }
 
     for (let i = 0; i < STATE_LIST.length; i++) {
@@ -401,7 +401,7 @@ $(document).ready(function() {
             storm_data = processStormData(storm_raw_data, state_population);
 
             data['hurricane'] = hurricane_data;
-            data['tornadoes'] = tornadoes_data;
+            data['tornado'] = tornadoes_data;
             data['gunshot'] = gunshot_data;
             data['storm'] = storm_data;
             return data;
@@ -409,10 +409,10 @@ $(document).ready(function() {
     }).then(function(data){
         // [TODO] Bind EventListener Here
         /* Usage Example 
-        console.log(getDisasterLocationList('tornado', '1960', '1961'));
-        console.log(getDisasterLocationList('tornado', '1960', '1961', "MI"));
-        console.log(getDeathRateList('tornado', '1960', '1961'));
-        console.log(getDeathRateList('tornado', '1964', '1974', 'AZ'));
+        //console.log(getDisasterLocationList('tornado', '1960', '1961'));
+        //console.log(getDisasterLocationList('tornado', '1960', '1961', "MI"));
+        //console.log(getDeathRateList('tornado', '1960', '1961'));
+        //console.log(getDeathRateList('tornado', '1964', '1974', 'AZ'));
         */
     });
 });
@@ -432,7 +432,7 @@ $(document).ready(function() {
 */
 let getDisasterLocationList = function(disasterType, startYear, endYear, targetState = "all") {
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
-        console.log("[Error] No such disaster type!");
+        //console.log("[Error] No such disaster type!");
         return;
     }
     let disaLocationList = [];
@@ -468,12 +468,11 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
 
 let getDeathRateList = function(disasterType, startYear, endYear, targetState = "all") {
     if (DISASTER_TYPES.indexOf(disasterType) === -1) {
-        console.log("[Error] No such disaster type!");
+        //console.log("[Error] No such disaster type!");
         return;
     }
     let deathRateList = []
     let deathDict = data[disasterType].death;
-    console.log('deathDict:',deathDict);
     let states = Object.keys(data[disasterType].death);
     if (targetState === "all") {
         for (let i = 0; i < STATE_LIST.length; i++) {
@@ -488,7 +487,7 @@ let getDeathRateList = function(disasterType, startYear, endYear, targetState = 
     } else {
         for (let y = startYear; y <= endYear; y++) {
             let year = y.toString();
-            if (deathDict[targetState][year] !== undefined) {
+            if (deathDict[targetState] !== undefined && deathDict[targetState][year] !== undefined) {
                 deathRateList.push(deathDict[targetState][year]);
             }
         }
