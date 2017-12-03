@@ -36,11 +36,11 @@ function updateStateDeathRateOnMap() {
         var state_poly = d3.select("#" + state_to_state_polygon(state_abbr));
         state_poly.style("fill",deathToColor(death_rate));
     }
-    console.log(stateDeathRates);
+    // console.log(stateDeathRates);
 }
 
 function updateStateDeathRateOnLineChart() {
-    let state = 'MI';
+    let state = abbrState($('.current-state').text(),'abbr');
     let startYear = +$('#amount-min').val();
     let endYear = +$('#amount-max').val();
 
@@ -50,7 +50,7 @@ function updateStateDeathRateOnLineChart() {
 }
 
 function drawLineChart(state, disaster, startYear, endYear) {
-    var data = getFakeDeathRateListOfState(state, disaster, startYear, endYear);
+    var data = getDeathRateListInUse(disaster, startYear, endYear, state);
     // console.log(data);
     // startYear = 100;
     // endYear = startYear + 21;
@@ -152,5 +152,4 @@ function refreshCheckBoxResult() {
     updateStateDeathRateOnMap();
     updateStateDeathRateOnLineChart();
     updateDisasterDotOnMap();
-    
 }

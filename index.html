@@ -112,6 +112,10 @@
                         //If value is undefined…
                         return "rgb(213,222,217)";
                     }
+                })
+                .on("click", function(d, i) {
+                    $('.current-state').text(d.properties.stateName);
+                    updateStateDeathRateOnLineChart();
                 });
 
 
@@ -182,6 +186,10 @@
     </script>
     <div class="lineChart">
         <h2>Line chart of the crisis by year</h2>
+        <div>
+            <label>State: </label>
+            <span class="current-state">Michigan</span>
+        </div>
         <div class="yearSlider">
             <label for="year">Select Year Range</label>
             <br>
@@ -215,9 +223,6 @@
                 .append("g")
                 .attr("class", disaster + "ChartGroup")
                 .attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
-            // chartsvg.append("path").attr("class", disaster + "Path");
-            // chartsvg.append("g").attr("class", disaster + "X");
-            // chartsvg.append("g").attr("class", disaster + "Y");
         }
         updateStateDeathRateOnLineChart();
     </script>
