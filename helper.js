@@ -479,14 +479,15 @@ $(document).ready(function() {
             earthquake_data = processEarthquakeData(earthquake_raw_data, state_population);
 
 
-            // data['hurricane'] = hurricane_data;
             data['tornado'] = tornadoes_data;
             data['gunshot'] = gunshot_data;
             data['hurricane'] = storm_data;
+            // data['hurricane'] = hurricane_data;
             data['earthquake'] = earthquake_data;
             return data;
         });
     }).then(function(data){
+        refreshMap();
         // [TODO] Bind EventListener Here
         /* Usage Example 
         //console.log(getDisasterLocationList('tornado', '1960', '1961'));
@@ -517,13 +518,14 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
     }
     let disaLocationList = [];
     let locationDict = data[disasterType].location;
+    console.log(locationDict)
     let states = Object.keys(data[disasterType].location);
     if (targetState === "all") {
         for (let i = 0; i < STATE_LIST.length; i++) {
             let state = STATE_LIST[i];
             for (let j = startYear; j <= endYear; j++) {
                 let year = j.toString();
-                if (locationDict[state][year] !== undefined) {
+                if (locationDict[state] !== undefined && locationDict[state][year] !== undefined) {
                     disaLocationList = disaLocationList.concat(locationDict[state][year]);
                 }
             }
@@ -531,7 +533,7 @@ let getDisasterLocationList = function(disasterType, startYear, endYear, targetS
     } else {
         for (let j = startYear; j <= endYear; j++) {
             let year = j.toString();
-            if (locationDict[targetState][year] !== undefined) {
+            if (locationDict[state] !== undefined && locationDict[targetState][year] !== undefined) {
                 disaLocationList = disaLocationList.concat(locationDict[targetState][year]);
             }
         }
