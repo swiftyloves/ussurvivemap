@@ -1,7 +1,8 @@
 {
   "name": "statemapdatahelper",
   "version": "1.0.0",
-  "description": "",
+  "descriptiion": "",
+  "scripts": {"start": "node index.js"},
   "main": "abbrState.js",
   "directories": {
     "lib": "lib"
