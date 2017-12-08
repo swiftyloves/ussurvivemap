@@ -102,7 +102,9 @@
                 .enter()
                 .append("path")
                 .attr("d", path)
-                .attr("class", "state")
+                .attr("class", function(d) {
+                    return d.properties.stateName == "Michigan" ? "selected-state" : "state";
+                })
                 .attr("id", function(d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr"))})
                 .style("fill", function (d) {
 
