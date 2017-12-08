@@ -97,13 +97,12 @@
             }
 
             // Bind the data to the SVG and create one path per GeoJSON feature
-            svg.selectAll("path")
+            var states = svg.selectAll("path")
                 .data(json.features)
                 .enter()
                 .append("path")
                 .attr("d", path)
-                .style("stroke", "#fff")
-                .style("stroke-width", "1")
+                .attr("class", "state")
                 .attr("id", function(d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr"))})
                 .style("fill", function (d) {
 
@@ -119,8 +118,16 @@
                     }
                 })
                 .on("click", function(d, i) {
+                    d3.select(".selected-state")
+                        .attr("class", "state");
                     $('.current-state').text(d.properties.stateName);
+                    d3.select("#" + state_to_state_polygon(abbrState(d.properties.stateName, "abbr")))
+                        .attr("class", "selected-state");
                     updateStateDeathRateOnLineChart();
+                    states.sort(function(a, b) {
+                        // console.log(a, b);
+                        return d.properties.stateName == a.properties.stateName ? 1 : -1;
+                    })
                 });
 
 
@@ -206,7 +213,7 @@
             <br>
             <div id="slider-range"></div>
         </div>
-        <div class="earthquakeChart">
+        <!-- <div class="earthquakeChart">
             <p>Earthquake</p>
         </div>
         <div class="gunshotChart">
@@ -217,12 +224,15 @@
         </div>
         <div class="tornadoChart">
             <p>Tornado</p>
-        </div>
+        </div> -->
     </div>
     <script>
+        let chartDiv = d3.select(".lineChart");
         for (disaster of disasterNames) {
-            let chartsvg = d3.select("." + disaster + "Chart")
-                .append("svg")
+            let disasterDiv = chartDiv.append("div")
+                .attr("class", disaster + "Chart");
+            disasterDiv.append("p").text(disaster.charAt(0).toUpperCase() + disaster.slice(1));
+            disasterDiv.append("svg")
                 .attr("width", chartWidth + chartMargin.left + chartMargin.right)
                 .attr("height", chartHeight + chartMargin.top + chartMargin.bottom)
                 .append("g")

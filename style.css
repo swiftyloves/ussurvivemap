@@ -4,6 +4,15 @@ path:hover {
     fill-opacity: .7;
 }
 
+path.selected-state {
+    stroke: blue;
+    stroke-width: 1px;    
+}
+
+path.state {
+    stroke: #fff;
+    stroke-width: 1px;
+}
 
 /* Style for Custom Tooltip */
 
