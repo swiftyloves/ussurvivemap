@@ -109,10 +109,23 @@ function drawLineChart(state, disaster, startYear, endYear) {
     chartSvg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + chartHeight + ")")
-        .call(xAxis);
+        .call(xAxis)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("x", chartWidth / 2)
+        .attr("y", 30)
+        .attr("text-anchor", "middle")
+        .text("year");
     chartSvg.append("g")
         .attr("class", "y axis")
-        .call(yAxis);
+        .call(yAxis)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Death Tolls");
 }
 
 function updateDisasterDotOnMap() {
