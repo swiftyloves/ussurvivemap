@@ -206,8 +206,10 @@ function refreshMap() {
         resetMapBgDisasterLoaction();
         updateDisasterDotOnMap();
         resetStateDeathRateOnMap();
+        $("#safeBar").css("display", "none");
     } else {
         resetDisasterDotOnMap();
         updateStateDeathRateOnMap();
+        $("#safeBar").css("display", "block");
     }
 }
