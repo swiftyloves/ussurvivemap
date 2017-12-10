@@ -1,9 +1,12 @@
 /* On mouse hover, lighten state color */
 
 path:hover {
+    /*fill: #02bdc7;*/
     fill-opacity: .7;
 }
-
+path:focus{
+    fill: #02bdc7;
+}
 
 /* Style for Custom Tooltip */
 
@@ -123,7 +126,7 @@ h2 {
     height: 15px;
     border-radius: 10px;
     background: white;
-    background: #AAAAAA;
+    background: #02bdc7;
     vertical-align: center;
     width: 90%;
 }
@@ -134,7 +137,7 @@ h2 {
     height: 20px;
     margin-top: -5px;
     margin-left: -10px;
-    border: solid 3px #696969;
+    border: solid 3px #02bdc7;
     border-radius: 100px;
     background: white;
     cursor: pointer;
@@ -161,6 +164,22 @@ h2 {
     fill: none;
 }
 
+.selected-line-earthquake{
+    stroke: #02bdc7;
+    stroke-width: 2;
+    fill: none;
+}
+.selected-line-tornado{
+    stroke: #ffb600;
+    stroke-width: 2;
+    fill: none;
+}
+.selected-line-gunshot{
+    /*stroke: "#fc4540";*/
+    stroke: #fc4540;
+    stroke-width: 2;
+    fill: none;
+}
 .axis path,
 .axis line {
     fill: none;
@@ -175,4 +194,22 @@ h2 {
 
 .selected-area {
     fill: lightsteelblue;
+}
+.selected-area-earthquake{
+    fill: rgba(2,189,199,0.5);
+}
+.selected-area-tornado{
+    fill: rgba(255,182,0, 0.5);
+}
+.selected-area-gunshot{
+    fill: rgba(252,69,64, 0.5);
+}
+.selected-state{
+    fill: #02bdc7;
+}
+.unselected-state{
+    fill: #dee9f2;
+}
+div.switch{
+    text-align: center;
 }

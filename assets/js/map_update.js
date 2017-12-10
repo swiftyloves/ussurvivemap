@@ -7,7 +7,8 @@ function state_to_state_polygon(state_name) {
 // Define linear scale for output
 var deathToColor = d3.scale.linear()
     .domain([min_death_rate, pivot_death_rate, max_death_rate])
-    .range(["green", 'yellow',"red"]);
+    .range(["#3EB54D", '#FFDD9E',"#D34B4B"]);
+
 function summarizeDeathRate(deathRateList) {
     return sum(deathRateList);
 }
@@ -47,6 +48,10 @@ function updateStateDeathRateOnLineChart() {
     for (disaster of disasterNames) {
         drawLineChart(state, disaster, startYear, endYear);
     }
+    var selectedState = $("#"+state+"_polygon");
+    $("svg.map>*").removeAttr("class");
+    $("svg.map>*").attr("class", "unselected-state")
+    selectedState.attr("class", "selected-state");
 }
 
 function drawLineChart(state, disaster, startYear, endYear) {
@@ -57,6 +62,7 @@ function drawLineChart(state, disaster, startYear, endYear) {
     // var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     // Set ranges
+
     var x = d3.scale.linear()
         .range([0, chartWidth])
         .domain([startYear, endYear]);
@@ -90,7 +96,15 @@ function drawLineChart(state, disaster, startYear, endYear) {
     chartSvg.append("path")
         .attr("class", function() {
             if (d3.select('#' + disaster + "_checkbox").property("checked")) {
-                return "selected-area";
+                if (disaster == "tornado"){
+                    return "selected-area-tornado";
+                }else if (disaster == "gunshot"){
+                    return "selected-area-gunshot";
+                }else if (disaster == "earthquake"){
+                    return "selected-area-earthquake";
+                }else{
+                    return "selected-area";
+                }
             } else {
                 return "default-area";
             }
@@ -99,7 +113,15 @@ function drawLineChart(state, disaster, startYear, endYear) {
     chartSvg.append("path")
         .attr("class", function() {
             if (d3.select('#' + disaster + "_checkbox").property("checked")) {
-                return "selected-line";
+                if (disaster == "tornado"){
+                    return "selected-line-tornado";
+                }else if (disaster == "gunshot"){
+                    return "selected-line-gunshot";
+                }else if (disaster == "earthquake"){
+                    return "selected-line-earthquake";
+                }else{
+                    return "selected-line";
+                }
             } else {
                 return "default-line";
             }
@@ -157,7 +179,6 @@ function resetStateDeathRateOnMap() {
         var state_name = stateNamePairs[s][0];
         var state_abbr = abbrState(state_name, "abbr");
         var state_poly = d3.select("#" + state_to_state_polygon(state_abbr));
-        state_poly.style("fill", "gray");
     }
 }
 function resetDisasterDotOnMap() {
