@@ -7,13 +7,13 @@
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="assets/js/def.js"></script>
+    <script src="assets/js/utility.js"></script>
+    <script src="helper.js"></script>
+    <script src="assets/js/map_update.js"></script>
+    <script src="assets/js/fake_data_generator.js"></script>
+    <script src="assets/js/function_docking.js"></script>
     <script type="text/javascript" src="effect.js"></script>
-    <script src="assets/js/def.js" ></script>
-    <script src="assets/js/utility.js" ></script>
-    <script src="helper.js" ></script>
-    <script src="assets/js/map_update.js" ></script>
-    <script src="assets/js/fake_data_generator.js" ></script>
-    <script src="assets/js/function_docking.js" ></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
@@ -21,25 +21,24 @@
     <h1>Where's the safest place in the U.S.?</h1>
     <h2>Select Disaster Types</h2>
     <div class="type">
-        <input type="checkbox" id="earthquake_checkbox" class="check" onclick = "refreshMap()"/>
-        <label for="earthquake" class="side-label">Earthquake</label>
-        <input type="checkbox" id="gunshot_checkbox" class="check" onclick = "refreshMap()"/>
-        <label for="gunshot" class="side-label">Gunshot</label>
+        <input type="checkbox" id="tornado_checkbox" class="check" onclick="refreshMap()" />
+        <label for="tornado" class="side-label" id="tornado_label">Tornado   <span>  <svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="black" stroke-width="1" fill="#ffb600" />
+</svg></span></label>
+        <input type="checkbox" id="gunshot_checkbox" class="check" onclick="refreshMap()" />
+        <label for="gunshot" class="side-label" id="gunshot_label">Gunshot  <span><svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="black" stroke-width="1" fill="#fc4540" /></svg></span></label>
+        <input type="checkbox" id="earthquake_checkbox" class="check" onclick="refreshMap()" />
+        <label for="earthquake" class="side-label" id="earthquake_label">Earthquake    <span><svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="black" stroke-width="1" fill="#02bdc7" /></svg></span></label>
         <!-- <input type="checkbox" id="hurricane_checkbox" class="check" onclick = "refreshMap()"/>
         <label for="hurricane" class="side-label">Hurricane</label> -->
-        <input type="checkbox" id="tornado_checkbox" class="check" onclick = "refreshMap()"/>
-        <label for="tornado" class="side-label">Tornado</label>
     </div>
     <h2>Choose Data Type</h2>
     <div class="switch">
-        <input type="radio" name="dataType", id="plot_disaster_location_radio" checked="checked", onclick = "refreshMap()"/>
-        <label for="incident" class="switch-label"  checked="checked", >Disaster Location</label>
-        <input type="radio" name="dataType", id="plot_plot_state_deathrate_radio", onclick = "refreshMap()"/>
-        <label for="states" class="switch-label" >State Death Rate</label>
-     </div>
+        <input type="radio" name="dataType" , id="plot_disaster_location_radio" checked="checked" , onclick="refreshMap()" />
+        <label for="incident" class="switch-label" checked="checked" >Disaster Location</label>
+        <input type="radio" name="dataType" , id="plot_plot_state_deathrate_radio" , onclick="refreshMap()" />
+        <label for="states" class="switch-label">State Death Rate</label>
+    </div>
     <script type="text/javascript">
-    
-    
     // Define path generator
     var path = d3.geo.path() // path generator that will convert GeoJSON to SVG paths
         .projection(projection); // tell path generator to use albersUsa projection
@@ -47,7 +46,7 @@
 
     // Define linear scale for output
     var color = d3.scale.linear()
-        .range(["rgb(236,236,236)", "rgb(62,181,77)", "rgb(255,221,158)", "rgb(211,75,75)"]);
+        .range(["rgb(236,236,236)", "rgb(62,181,77)", "rgb(255,221,158)", "#dee9f2"]);
 
     var legendText = ["Cities Lived", "States Lived", "States Visited", "Nada"];
 
@@ -102,36 +101,66 @@
                 .enter()
                 .append("path")
                 .attr("d", path)
-                .attr("class", function(d) {
-                    return d.properties.stateName == "Michigan" ? "selected-state" : "state";
-                })
-                .attr("id", function(d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr"))})
-                .style("fill", function (d) {
+                .style("stroke", "#fff")
+                .style("stroke-width", "1")
+                .attr("id", function (d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr")) })
+                .attr("class", "unselected-state")
+                // function (d) {
 
-                    // Get data value
-                    var value = d.properties.visited;
+                // Get data value
+                // var value = d.properties.visited;
 
-                    if (value) {
-                        //If value exists…
-                        return color(value);
-                    } else {
-                        //If value is undefined…
-                        return "rgb(213,222,217)";
-                    }
-                })
-                .on("click", function(d, i) {
-                    d3.select(".selected-state")
-                        .attr("class", "state");
+                // if (value) {
+                //     //If value exists…
+                //     return "#dee9f2";
+                // } else {
+                //     //If value is undefined…
+                //     return "#dee9f2";
+                // }
+                // })
+                .on("click", function (d, i) {
+//                 .attr("class", function(d) {
+//                     return d.properties.stateName == "Michigan" ? "selected-state" : "state";
+//                 })
+//                 .attr("id", function(d, i) { return state_to_state_polygon(abbrState(d.properties.stateName, "abbr"))})
+//                 .style("fill", function (d) {
+
+//                     // Get data value
+//                     var value = d.properties.visited;
+
+//                     if (value) {
+//                         //If value exists…
+//                         return color(value);
+//                     } else {
+//                         //If value is undefined…
+//                         return "rgb(213,222,217)";
+//                     }
+//                 })
+//                 .on("click", function(d, i) {
+//                     d3.select(".selected-state")
+//                         .attr("class", "state");
                     $('.current-state').text(d.properties.stateName);
                     d3.select("#" + state_to_state_polygon(abbrState(d.properties.stateName, "abbr")))
                         .attr("class", "selected-state");
                     updateStateDeathRateOnLineChart();
-                    states.sort(function(a, b) {
-                        // console.log(a, b);
-                        return d.properties.stateName == a.properties.stateName ? 1 : -1;
-                    })
+                })
+                .on("mouseover", function (d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.text(d.properties.stateName)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function (d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+//                     states.sort(function(a, b) {
+//                         // console.log(a, b);
+//                         return d.properties.stateName == a.properties.stateName ? 1 : -1;
+//                     })
                 });
-
 
             // Map the cities I have lived in!
             // d3.csv("cities-lived.csv", function (data) {
@@ -215,18 +244,6 @@
             <br>
             <div id="slider-range"></div>
         </div>
-        <!-- <div class="earthquakeChart">
-            <p>Earthquake</p>
-        </div>
-        <div class="gunshotChart">
-            <p>Gunshot</p>
-        </div>
-        <div class="hurricaneChart">
-            <p>Hurricane</p>
-        </div>
-        <div class="tornadoChart">
-            <p>Tornado</p>
-        </div> -->
     </div>
     <script>
         let chartDiv = d3.select(".lineChart");

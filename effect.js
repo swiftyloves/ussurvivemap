@@ -2,7 +2,7 @@ $(function () {
     $("#slider-range").slider({
         range: true,
         min: 1950,
-        max: 2016 ,
+        max: 2016,
         values: [1950, 2016],
         animate: true,
         step: 1,

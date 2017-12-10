@@ -4,10 +4,10 @@ var max_death_rate = 0.1;
 var pivot_death_rate = (min_death_rate + max_death_rate )/2;
 //Width and height of map
 var disasterToColorMapping = {
-    "earthquake": "brown",
-    "gunshot":  "black",
+    "earthquake": "#02bdc7",
+    "gunshot":  "#fc4540",
     "hurricane": "blue", 
-    "tornado": "red"};
+    "tornado": "#ffb600"};
 
 function disaster_to_color(color) {
     return disasterToColorMapping[color]
