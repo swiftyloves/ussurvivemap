@@ -4,9 +4,12 @@ path:hover {
     /*fill: #02bdc7;*/
     fill-opacity: .7;
 }
-path:focus{
+
+path:focus {
     fill: #02bdc7;
 }
+
+
 
 /* Style for Custom Tooltip */
 
@@ -30,6 +33,8 @@ body {
     color: #59595A;
     font-size: 0.8em;
 }
+
+
 
 
 /* Legend Position Style */
@@ -105,6 +110,8 @@ h2 {
 }
 
 
+
+
 /*year slider begin*/
 
 .slider_txt {
@@ -149,37 +156,46 @@ h2 {
 }
 
 
+
+
 /*year slider end*/
 
+.side-label {
+    margin-right: 20px;
+    width: 200px;
+}
 
-.default-line { 
+.default-line {
     stroke: lightgray;
     stroke-width: 2;
     fill: none;
 }
 
-.selected-line { 
+.selected-line {
     stroke: steelblue;
     stroke-width: 2;
     fill: none;
 }
 
-.selected-line-earthquake{
+.selected-line-earthquake {
     stroke: #02bdc7;
     stroke-width: 2;
     fill: none;
 }
-.selected-line-tornado{
+
+.selected-line-tornado {
     stroke: #ffb600;
     stroke-width: 2;
     fill: none;
 }
-.selected-line-gunshot{
+
+.selected-line-gunshot {
     /*stroke: "#fc4540";*/
     stroke: #fc4540;
     stroke-width: 2;
     fill: none;
 }
+
 .axis path,
 .axis line {
     fill: none;
@@ -195,21 +211,27 @@ h2 {
 .selected-area {
     fill: lightsteelblue;
 }
-.selected-area-earthquake{
-    fill: rgba(2,189,199,0.5);
+
+.selected-area-earthquake {
+    fill: rgba(2, 189, 199, 0.5);
 }
-.selected-area-tornado{
-    fill: rgba(255,182,0, 0.5);
+
+.selected-area-tornado {
+    fill: rgba(255, 182, 0, 0.5);
 }
-.selected-area-gunshot{
-    fill: rgba(252,69,64, 0.5);
+
+.selected-area-gunshot {
+    fill: rgba(252, 69, 64, 0.5);
 }
-.selected-state{
+
+.selected-state {
     fill: #02bdc7;
 }
-.unselected-state{
+
+.unselected-state {
     fill: #dee9f2;
 }
-div.switch{
+
+div.switch {
     text-align: center;
 }

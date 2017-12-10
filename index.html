@@ -21,18 +21,19 @@
     <h2>Select Disaster Types</h2>
     <div class="type">
         <input type="checkbox" id="tornado_checkbox" class="check" onclick="refreshMap()" />
-        <label for="tornado" class="side-label">Tornado</label>
+        <label for="tornado" class="side-label" id="tornado_label">Tornado   <span>  <svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="black" stroke-width="1" fill="#ffb600" />
+</svg></span></label>
         <input type="checkbox" id="gunshot_checkbox" class="check" onclick="refreshMap()" />
-        <label for="gunshot" class="side-label">Gunshot</label>
+        <label for="gunshot" class="side-label" id="gunshot_label">Gunshot  <span><svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="black" stroke-width="1" fill="#fc4540" /></svg></span></label>
         <input type="checkbox" id="earthquake_checkbox" class="check" onclick="refreshMap()" />
-        <label for="earthquake" class="side-label">Earthquake</label>
+        <label for="earthquake" class="side-label" id="earthquake_label">Earthquake    <span><svg height="12" width="12"><circle cx="6" cy="6" r="5" stroke="black" stroke-width="1" fill="#02bdc7" /></svg></span></label>
         <!-- <input type="checkbox" id="hurricane_checkbox" class="check" onclick = "refreshMap()"/>
         <label for="hurricane" class="side-label">Hurricane</label> -->
     </div>
     <h2>Choose Data Type</h2>
     <div class="switch">
         <input type="radio" name="dataType" , id="plot_disaster_location_radio" checked="checked" , onclick="refreshMap()" />
-        <label for="incident" class="switch-label" checked="checked" ,>Disaster Location</label>
+        <label for="incident" class="switch-label" checked="checked" >Disaster Location</label>
         <input type="radio" name="dataType" , id="plot_plot_state_deathrate_radio" , onclick="refreshMap()" />
         <label for="states" class="switch-label">State Death Rate</label>
     </div>
@@ -217,7 +218,7 @@
             <div id="slider-range"></div>
         </div>
         <div class="tornadoChart">
-            <p>Tornado</p>
+            <p>Tornado  </p>
         </div>
         <div class="gunshotChart">
             <p>Gunshot</p>
