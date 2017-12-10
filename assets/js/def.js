@@ -1,4 +1,4 @@
-var disasterNames = ["earthquake", "gunshot" , "tornado"];
+var disasterNames = ["tornado", "gunshot" , "earthquake"];
 var min_death_rate =  0;
 var max_death_rate = 0.1;
 var pivot_death_rate = (min_death_rate + max_death_rate )/2;
