@@ -61,10 +61,10 @@ function drawLineChart(state, disaster, startYear, endYear) {
     // var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     // Set ranges
-
-    var x = d3.scale.linear()
+    var timeParse = d3.time.format("%Y");
+    var x = d3.time.scale()
         .range([0, chartWidth])
-        .domain([startYear, endYear]);
+        .domain([timeParse.parse(startYear.toString()), timeParse.parse(endYear.toString())]);
     var y = d3.scale.linear()
         .range([chartHeight, 0])
         .domain([0, d3.max(data)]);
@@ -80,11 +80,11 @@ function drawLineChart(state, disaster, startYear, endYear) {
 
     // Define line
     var valueLine = d3.svg.line()
-        .x(function (_, i) { return x(i + startYear); })
+        .x(function (_, i) { return x(timeParse.parse((i + startYear).toString())); })
         .y(function (d) { return y(d); });
 
     var area = d3.svg.area()
-        .x(function (d, i) { return x(i + startYear); })
+        .x(function(d, i) { return x(timeParse.parse((i + startYear).toString())); })
         .y0(chartHeight)
         .y1(function (d) { return y(d); });
 
@@ -129,10 +129,23 @@ function drawLineChart(state, disaster, startYear, endYear) {
     chartSvg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + chartHeight + ")")
-        .call(xAxis);
+        .call(xAxis)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("x", chartWidth / 2)
+        .attr("y", 30)
+        .attr("text-anchor", "middle")
+        .text("year");
     chartSvg.append("g")
         .attr("class", "y axis")
-        .call(yAxis);
+        .call(yAxis)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Death Tolls");
 }
 
 function updateDisasterDotOnMap() {

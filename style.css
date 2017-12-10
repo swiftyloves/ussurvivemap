@@ -5,11 +5,15 @@ path:hover {
     fill-opacity: .7;
 }
 
-path:focus {
-    fill: #02bdc7;
+path.selected-state {
+    stroke: rgb(67, 233, 255);
+    stroke-width: 1px;
 }
 
-
+path.state {
+    stroke: #fff;
+    stroke-width: 1px;
+}
 
 /* Style for Custom Tooltip */
 
