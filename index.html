@@ -119,8 +119,15 @@
                 .on("click", function (d, i) {
                     $('.current-state').text(d.properties.stateName);
                     updateStateDeathRateOnLineChart();
-                });
-
+                })
+                .on("mouseover", function (d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.text(d.properties.stateName)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
 
             // Map the cities I have lived in!
             // d3.csv("cities-lived.csv", function (data) {
@@ -228,9 +235,9 @@
             .attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
     }
     updateStateDeathRateOnLineChart();
-    
     </script>
     <div id="safeBar"></div>
 </body>
 <script type="text/javascript" src="effect.js"></script>
+
 </html>
