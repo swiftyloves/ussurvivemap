@@ -13,6 +13,20 @@ function disaster_to_color(color) {
     return disasterToColorMapping[color]
 }
 
+function get_radius_by_disaster(disaster) {
+    return 5;
+}
+
+function get_opacity_by_disaster(disaster) {
+    if (disaster === "tornado") return 0.02;
+    return 0.85;
+}
+
+function get_stroke_by_disaster(disaster) {
+    if (disaster === "tornado") return "none";
+    return "black";
+}
+
 var width = 960;
 var height = 500;
 var stateNamePairs = [

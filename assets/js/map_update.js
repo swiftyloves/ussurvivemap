@@ -179,12 +179,15 @@ function updateDisasterDotOnMap() {
             if (loc == undefined) return 0;
             return projection([d.long, d.lat])[1];
         })
-        .attr("r", 5)
+        .attr("r", function(d) {
+            return get_radius_by_disaster(d.name);})
         .style("fill", function (d) {
             return disaster_to_color(d.name);
         })
-        .style("opacity", 0.85)
-        .style('stroke', "black")
+        .style("opacity", function(d) {
+            return get_opacity_by_disaster(d.name);})
+        .style("stroke", function(d) {
+            return get_stroke_by_disaster(d.name);})
 }
 
 function resetStateDeathRateOnMap() {
